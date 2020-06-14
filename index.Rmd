@@ -11,7 +11,7 @@ In this work, several hundred fields were surveyed across nine geographic zones 
 
 ## Cite this compendium
 
-> Del Ponte, E. M., & Belachew, K. (2020, June 14). Research Compendium: Altitude is the main driver of coffee leaf rust epidemic - a large-scale survey in Ethiopia. <a href="https://doi.org/10.17605/OSF.IO/XEJAZ</a>
+> Del Ponte, E. M., & Belachew, K. (2020, June 14). Research Compendium: Altitude is the main driver of coffee leaf rust epidemic - a large-scale survey in Ethiopia. <a href="https://doi.org/10.17605/OSF.IO/XEJAZ">https://doi.org/10.17605/OSF.IO/XEJAZ</a>
 
 
 

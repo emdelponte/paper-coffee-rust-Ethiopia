@@ -284,14 +284,14 @@ p_cropping
 survey$cropping_system <- factor(survey$cropping_system, levels = c("Forest", "Semiforest", "Garden", "Plantation"))
 p_cropping_altitude <- survey %>% 
   dplyr::select(altitude, cropping_system, inc, sev2) %>% 
-  ggplot(aes(altitude, sev2, color = cropping_system, group = cropping_system))+
-  geom_point(size = 3, shape = 16)+
+  ggplot(aes(altitude, logit(sev2), color = cropping_system, group = cropping_system))+
+  geom_point(size = 2, shape = 16, alpha = 0.8)+
  # geom_smooth(method = "lm", se = F )+
   theme_minimal_grid(font_size=11)+
   theme(legend.position = "top")+
   labs(color = "",
        x = "Altitude (m)",
-       y = "Severity (%)")+
+       y = "Logit severity")+
   scale_color_brewer(palette = "Greens", direction = -1)
 p_cropping_altitude
   
@@ -336,14 +336,14 @@ survey$farm_management <- factor(
 survey$farm_management, levels = c("Intensive", "Moderate", "Minimal", "Unmanaged"))
 p_farm_man_altitude <- survey %>% 
   dplyr::select(altitude, farm_management, inc, sev2) %>% 
-  ggplot(aes(altitude, sev2, color = farm_management, group = farm_management))+
-  geom_point(size = 3, shape = 16)+
+  ggplot(aes(altitude, logit(sev2), color = farm_management, group = farm_management))+
+  geom_point(size = 2, shape = 16, alpha = 0.8)+
  # geom_smooth(method = "lm", se = F )+
   theme_minimal_grid(font_size=11)+
   theme(legend.position = "top")+
   labs(color = "",
        x = "Altitude (m)",
-       y = "Severity (%)")+
+       y = "Logit severity")+
 scale_color_brewer(palette = "Blues", direction = -1)
 p_farm_man_altitude
   
@@ -384,14 +384,14 @@ survey$shade, levels = c("Full shade", "Mid shade", "Sun"))
 
 p_shade_altitude <- survey %>% 
   dplyr::select(altitude, shade, inc, sev2) %>% 
-  ggplot(aes(altitude, sev2, color = shade, group = shade))+
-  geom_point(size = 3, shape = 16)+
+  ggplot(aes(altitude, logit(sev2), color = shade, group = shade))+
+  geom_point(size = 2, shape = 16, alpha = 0.8)+
  # geom_smooth(method = "lm", se = F )+
   theme_minimal_grid(font_size=11)+
   theme(legend.position = "top")+
   labs(color = "",
        x = "Altitude (m)",
-       y = "Severity (%)")+
+       y = "Logit severity")+
   scale_color_brewer(palette = "OrRd", direction = 1)
 p_shade_altitude
   
@@ -437,14 +437,14 @@ survey$cultivar <- factor(
 survey$cultivar, levels = c("Improved", "Mixture", "Local", "Unmanaged"))
 p_cult_altitude <- survey %>% 
   dplyr::select(altitude, cultivar, inc, sev2) %>% 
-  ggplot(aes(altitude, sev2, color = cultivar, group = cultivar))+
-  geom_point(size = 3, shape = 16)+
+  ggplot(aes(altitude, logit(sev2), color = cultivar, group = cultivar))+
+  geom_point(size = 2, shape = 16, alpha = 0.8)+
  # geom_smooth(method = "lm", se = F )+
   theme_minimal_grid(font_size=11)+
   theme(legend.position = "top")+
   labs(color = "",
        x = "Altitude (m)",
-       y = "Severity (%)")+
+       y = "Logit severity")+
   scale_color_brewer(palette = "PuRd", direction = -1)
 p_cult_altitude
   

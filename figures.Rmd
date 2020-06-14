@@ -1,0 +1,504 @@
+% Figures
+
+
+```{r setup, include=FALSE}
+library(tidyverse)
+library(readxl)
+library(janitor)
+library(cowplot)
+library(patchwork)
+library(ggrepel)
+library(viridis)
+library(lme4) 
+library(emmeans)
+library(LaplacesDemon)
+library(car)
+```
+
+## Figure 1
+
+### Ethiopia Map
+
+```{r}
+library(rnaturalearth)
+library(rnaturalearthhires)
+library(sf)
+
+
+ETH <- ne_countries(
+  country = "Ethiopia",
+  returnclass = "sf"
+)
+
+region <- sf::st_read("data/ethiopiaregion/Eth_Region_2013.shp")
+zone <- sf::st_read("data/ethiopia-zone/Eth_Zone_2013.shp")
+district <- sf::st_read("data/ethiopiaworeda/Eth_Woreda_2013.shp")
+```
+
+
+```{r}
+
+ETH_REGIONS <- region %>%
+  filter(REGIONNAME %in% c("SNNPR", "Oromia"))
+
+survey$zone <- plyr::revalue(
+  survey$zone,
+  c(
+    "Ilu AbaBora" = "Ilubabor",
+
+    "West Welega" = "West Wellega"
+  )
+)
+
+zone_names <- survey %>%
+  select(zone) %>%
+  unique()
+
+ETH_ZONE <- zone %>%
+  filter(ZONENAME %in% c(
+    "Jimma",
+    "West Wellega",
+    "Sidama",
+    "Sheka",
+    "Keffa",
+    "Bench Maji",
+    "Bale",
+    "Gedio",
+    "Ilubabor"
+  ))
+
+district_names <- survey %>%
+  select(district) %>%
+  unique()
+
+survey$district <- plyr::revalue(survey$district, c(
+  "Aira" = "Ayira",
+  "Aletawondo" = "Aleta Wendo",
+  "Anderecha" = "Anderacha",
+  "Debub B" = "Debub Bench",
+  "Delo-Menna" = "Mena",
+  "Di/Zuria" = "Dila Zuria",
+  "Gurafarda" = "Gurafereda",
+  "Harena" = "Harena Buluk",
+  "Mettu" = "Metu Zuria",
+  "Shebe-Sombo" = "Shebe Sambo",
+  "Shebedino" = "Shebe Dino",
+  "Sheko" = "Sheka",
+  "Wonago" = "Wenago",
+  "Y/chefe" = "Yirgachefe",
+  "Yayo" = "Yayu",
+  "Gomma" = "Goma"
+))
+district_names <- district_names$district
+
+
+ETH_DISTRICTS <- district %>%
+  filter(WOREDANAME %in% district_names)
+```
+
+
+
+
+```{r fig.height=3, fig.width=7, message=FALSE, warning=FALSE}
+survey <- read_csv("data/survey_clean.csv")
+
+```
+
+
+```{r eval=FALSE, include=FALSE}
+library(ggsflabel)
+library(plotly)
+library(ggsn)
+ETH2 <- st_transform(ETH, 31983)
+
+map_district <- ggplot(ETH) +
+  # geom_sf(data = ETH, fill = "grey92", size = 0.3, color = "white") +
+
+  geom_sf(data = ETH_ZONE, color = NA, size = 0) +
+  geom_sf(data = ETH_REGIONS, alpha = 0.1, fill = "grey90", color = "grey30", aes(linetype = REGIONNAME), size = 0.9) +
+  geom_sf(data = ETH_DISTRICTS,  color = "black", size = 0.4) +
+  coord_sf(datum = NA) +
+  theme_map() +
+  theme(legend.position = "right") +
+  scale_fill_brewer(type = "qual", palette = "Set3") +
+  geom_sf_text_repel(
+    dat = ETH_DISTRICTS, aes(label = WOREDANAME), size = 4
+  ) +
+  scale_color_viridis() +
+  geom_point(data = survey, aes(lon, lat, color = altitude), size = 1, shape = 16)
+  # guides(colour = guide_legend(override.aes = list(size = 4))) +
+  # labs(
+  # x = "Longitude", y = "Latitude", fill = "Zone", linetype = "Region",
+  # ) +
+
+
+  ggsave("figs/map_districts.png", width = 15, dpi = 300)
+```
+
+
+```{r eval=FALSE, include=FALSE}
+plot_grid(map_district, labels = LETTERS, ncol = 1, align = "v")
+ggsave("figs/Figure1.png", width = 10)
+```
+
+
+
+## Figure 2
+
+### Inc-Sev relationship
+
+
+
+## Figure 3
+
+### Incidence vs zone
+
+
+```{r}
+p_inc_alt_zone <- survey %>%
+  ggplot(aes(altitude, logit(inc/100), color = zone, group = zone)) +
+  geom_point() +
+  geom_smooth(method = lm, se = F) +
+  theme_minimal_grid(font_size = 10) +
+  theme(legend.position = "none") +
+  scale_color_brewer(type = "qual", palette = "Set3")+
+    labs(x = "Altitude (m)", y = "Logit Incidence (proportion)")
+
+```
+
+
+### Severity vs zone
+
+
+```{r}
+p_sev_alt_zone <- survey %>%
+  ggplot(aes(altitude, logit(sev2/100), color = zone, group = zone)) +
+  geom_point() +
+  geom_smooth(method = lm, se = F) +
+  theme_minimal_grid(font_size = 10) +
+  theme(legend.position = "none") +
+  scale_color_brewer(type = "qual", palette = "Set3")+
+    labs(x = "Altitude (m)", y = "Logit Severity (Proportion)")
+
+```
+
+
+##### Plot slopes  inc by zone
+
+
+#### Effect on incidence
+
+
+```{r}
+m_alt_inc_zone <- lmer(logit(inc/100 ) ~ altitude * zone + (1 | district), survey, REML = F)
+summary(m_alt_inc_zone)
+Anova(m_alt_inc_zone, type = "III")
+
+zone_alt_inc <- data.frame(emtrends(m_alt_inc_zone, pairwise ~ zone, var = "altitude" ))
+
+
+
+```
+
+
+
+
+
+```{r}
+p_slopes_inc_alt_zone <- zone_alt_inc %>% 
+  ggplot(aes(reorder(emtrends.zone, emtrends.altitude.trend),emtrends.altitude.trend, color = emtrends.zone))+
+  geom_point(size =3)+
+  coord_flip()+
+  theme_minimal_vgrid(font_size = 11)+
+  theme(legend.position = "none")+
+   scale_color_brewer(type = "qual", palette = "Set3")+
+  labs(x = "", y = "Slope estimates")+
+  geom_errorbar(aes(ymin = emtrends.lower.CL, ymax = emtrends.upper.CL),
+                width =0.2, size =1)
+```
+
+
+##### Plots slopes sev by zone
+
+
+```{r}
+m_alt_sev_zone <- lmer(logit(sev2 ) ~ altitude * zone + (1 | district), data = survey, REML = F)
+Anova(m_alt_sev_zone)
+zone_alt_sev <- data.frame(emtrends(m_alt_sev_zone, pairwise ~ zone, var = "altitude" ))
+```
+
+
+
+```{r}
+p_slopes_sev_alt_zone <- zone_alt_sev %>% 
+  ggplot(aes(reorder(emtrends.zone, emtrends.altitude.trend),emtrends.altitude.trend, color = emtrends.zone))+
+  geom_point(size =3)+
+  coord_flip()+
+  theme_minimal_vgrid(font_size = 11)+
+  theme(legend.position = "none")+
+   scale_color_brewer(type = "qual", palette = "Set3")+
+  labs(x = "", y = "Slope estimates")+
+  geom_errorbar(aes(ymin = emtrends.lower.CL, ymax = emtrends.upper.CL),
+                width =0.2, size =1)
+
+```
+
+##### Panel of plots 
+
+```{r}
+((p_inc_alt_zone  / p_sev_alt_zone ) | (p_slopes_inc_alt_zone / p_slopes_sev_alt_zone)) +
+  plot_annotation(tag_levels = "A") 
+  ggsave("figs/Figure3.png", width = 8, height = 7)
+```
+
+
+## Figure 4
+
+### Cropping system by zone
+
+```{r}
+survey$cropping_system <- factor(survey$cropping_system, levels = c("Forest", "Semiforest", "Garden", "Plantation"))
+
+csystem <- survey %>% 
+  tabyl(zone, cropping_system) %>% 
+  gather(cropping_system, name, 2:5)
+
+csystem$cropping_system <- factor(csystem$cropping_system, levels = c("Forest", "Semiforest", "Garden", "Plantation"))
+
+p_cropping <- csystem %>% 
+  ggplot(aes(zone, name, fill = cropping_system))+
+  geom_col(position = "fill", color = "black", size =0.3)+
+  theme(legend.position = "none",
+        axis.text.x = element_text(angle = 45, hjust = 1))+
+  labs(fill = "",
+       x = "",
+       y = "Proportion")+
+  scale_fill_brewer(palette = "Greens", direction = -1)
+p_cropping
+```
+
+### Cropping system by altitude
+
+```{r}
+
+survey$cropping_system <- factor(survey$cropping_system, levels = c("Forest", "Semiforest", "Garden", "Plantation"))
+p_cropping_altitude <- survey %>% 
+  dplyr::select(altitude, cropping_system, inc, sev2) %>% 
+  ggplot(aes(altitude, sev2, color = cropping_system, group = cropping_system))+
+  geom_point(size = 3, shape = 16)+
+ # geom_smooth(method = "lm", se = F )+
+  theme_minimal_grid(font_size=11)+
+  theme(legend.position = "top")+
+  labs(color = "",
+       x = "Altitude (m)",
+       y = "Severity (%)")+
+  scale_color_brewer(palette = "Greens", direction = -1)
+p_cropping_altitude
+  
+```
+
+
+### Farm management by zone
+
+```{r}
+
+farm_man <- survey %>% 
+  tabyl(zone, farm_management) %>% 
+  gather(farm_management, name, 2:5) 
+
+
+farm_man$farm_management <- factor(
+farm_man$farm_management, levels = c("Intensive", "Moderate", "Minimal", "Unmanaged"))
+
+p_farm <- farm_man %>% 
+  ggplot(aes(zone, name, fill = farm_management))+
+  geom_col(position = "fill", color = "black", size =0.3)+
+  theme(legend.position = "none",
+        axis.text.x = element_text(angle = 45, hjust = 1))+
+  labs(fill = "",
+       x = "",
+       y = "Proportion")+
+  scale_fill_brewer(palette = "Blues", direction = -1)
+
+  
+```
+
+
+
+### Farm management by altitude
+
+
+```{r}
+
+
+
+survey$farm_management <- factor(
+survey$farm_management, levels = c("Intensive", "Moderate", "Minimal", "Unmanaged"))
+p_farm_man_altitude <- survey %>% 
+  dplyr::select(altitude, farm_management, inc, sev2) %>% 
+  ggplot(aes(altitude, sev2, color = farm_management, group = farm_management))+
+  geom_point(size = 3, shape = 16)+
+ # geom_smooth(method = "lm", se = F )+
+  theme_minimal_grid(font_size=11)+
+  theme(legend.position = "top")+
+  labs(color = "",
+       x = "Altitude (m)",
+       y = "Severity (%)")+
+scale_color_brewer(palette = "Blues", direction = -1)
+p_farm_man_altitude
+  
+```
+
+### Shade by zone
+
+
+```{r}
+library(janitor)
+survey_shade <- survey %>% 
+  tabyl(zone, shade) %>% 
+  gather(shade, name, 2:4) 
+
+
+survey_shade$shade <- factor(
+survey_shade$shade, levels = c("Full shade", "Mid shade", "Sun"))
+
+p_shade <- survey_shade %>% 
+  ggplot(aes(zone, name, fill = shade))+
+  geom_col(position = "fill", color = "black", size =0.3)+
+  theme(legend.position = "none",
+        axis.text.x = element_text(angle = 45, hjust = 1))+
+  labs(fill = "",
+       x = "",
+       y = "Proportion")+
+  scale_fill_brewer(palette = "OrRd", direction = 1)
+p_shade
+```
+
+### Shade by altitude
+
+
+```{r}
+
+survey$shade <- factor(
+survey$shade, levels = c("Full shade", "Mid shade", "Sun"))
+
+p_shade_altitude <- survey %>% 
+  dplyr::select(altitude, shade, inc, sev2) %>% 
+  ggplot(aes(altitude, sev2, color = shade, group = shade))+
+  geom_point(size = 3, shape = 16)+
+ # geom_smooth(method = "lm", se = F )+
+  theme_minimal_grid(font_size=11)+
+  theme(legend.position = "top")+
+  labs(color = "",
+       x = "Altitude (m)",
+       y = "Severity (%)")+
+  scale_color_brewer(palette = "OrRd", direction = 1)
+p_shade_altitude
+  
+```
+
+
+### Cultivar by zone
+
+```{r}
+
+survey_cult <-survey %>% 
+  tabyl(zone, cultivar) %>% 
+  gather(cultivar, name, 2:4) 
+  
+
+survey_cult$cultivar <- factor(
+
+survey_cult$cultivar, levels = c("Improved", "Mixture", "Local", "Unmanaged"))
+
+p_cult <- survey_cult %>% 
+  ggplot(aes(zone, name, fill = cultivar))+
+  geom_col(position = "fill", color = "black", size =0.3)+
+  theme(legend.position = "none",
+        axis.text.x = element_text(angle = 45, hjust = 1))+
+  labs(fill = "",
+       x = "",
+       y = "Proportion")+
+  scale_fill_brewer(palette = "PuRd", direction = -1)
+p_cult
+
+
+
+```
+
+
+### Cultivar by altitude
+
+
+```{r}
+
+survey$cultivar <- factor(
+
+survey$cultivar, levels = c("Improved", "Mixture", "Local", "Unmanaged"))
+p_cult_altitude <- survey %>% 
+  dplyr::select(altitude, cultivar, inc, sev2) %>% 
+  ggplot(aes(altitude, sev2, color = cultivar, group = cultivar))+
+  geom_point(size = 3, shape = 16)+
+ # geom_smooth(method = "lm", se = F )+
+  theme_minimal_grid(font_size=11)+
+  theme(legend.position = "top")+
+  labs(color = "",
+       x = "Altitude (m)",
+       y = "Severity (%)")+
+  scale_color_brewer(palette = "PuRd", direction = -1)
+p_cult_altitude
+  
+```
+
+
+
+### Compose figure
+
+```{r}
+library(patchwork)
+
+ ((p_cropping_altitude / p_cult_altitude / p_farm_man_altitude / p_shade_altitude) |
+  ((p_cropping / p_cult /p_farm / p_shade ) ))+ 
+      plot_annotation(tag_levels = 'A') 
+ggsave("figs/Figure4.png", width =8, height =10)
+
+```
+
+(p_cropping_altitude / p_cult_altitude / p_farm_man_altitude / p_shade_altitude))+ 
+
+
+
+
+## Figure 5
+
+### MCA plot
+
+```{r}
+library(FactoMineR)
+library(factoextra)
+survey_mca <- survey %>% 
+ mutate(altitude2 = case_when(
+    altitude < 1452 ~ "< 1452",
+    altitude < 1685 ~ "1452 to 1685",
+    TRUE ~ "> 1685m"
+  )) 
+ 
+attach(survey_mca)
+data_mca <- survey_mca %>% dplyr::select(altitude2, zone, cultivar, shade, cropping_system, farm_management)
+
+head(data_mca)
+cats <- apply(data_mca, 2, function(x) nlevels(as.factor(x))) # enumera as categorias
+cats
+res.mca <- MCA(data_mca, graph = FALSE)
+
+p <- fviz_mca_var(res.mca,
+  label = "var", repel = T,
+  col.var = "contrib",
+  # Avoid text overlapping (slow if many point)
+  ggtheme = theme_minimal()
+)
+p + scale_color_viridis() +
+  labs (title = "", fill = "Contribution")+
+  ggsave("figs/Figure5.png", width =7, height =5)
+```
+

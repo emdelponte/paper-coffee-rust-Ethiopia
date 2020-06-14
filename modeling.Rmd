@@ -1,0 +1,226 @@
+% Modeling
+
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, message = FALSE, warning = FALSE)
+library(tidyverse)
+library(readxl)
+library(janitor)
+library(cowplot)
+library(patchwork)
+library(ggrepel)
+library(viridis)
+library(lme4) 
+library(emmeans)
+library(LaplacesDemon)
+library(car)
+```
+
+# Read data
+
+```{r fig.height=3, fig.width=7, message=FALSE, warning=FALSE}
+survey <- read_csv("data/survey_clean.csv")
+
+```
+
+
+## Incidence vs severity
+
+```{r}
+survey <- survey %>%
+  mutate(ID = seq(1, 1, by = 1))
+
+# random intercept and slopes
+mix1 <- lmer(log(sev2) ~ log(inc) + (log(inc) | district), data = survey)
+```
+
+```{r}
+mix1@beta[1]
+cis <- confint(mix1)
+cis[5]
+summary(mix1)
+library(lmerTest)
+anova(mix1, ddf = "Kenward-Roger")
+
+library(piecewiseSEM)
+summary(mix1)
+# plot the pearson's model residuals
+plot(mix1, type = c("p", "smooth"))
+vc <- VarCorr(mix1)
+as.data.frame(vc, order = "lower.tri")
+rsquared(mix1)
+
+library(robustlmm)
+mix1rob <- rlmer(log(sev2) ~ log(inc) + (inc | district),
+  data = survey,
+  method = "DASvar"
+)
+compare(mix1, mix1rob, show.rho.functions = FALSE)
+summary(mix1rob)
+
+d2 <- data.frame(ranef(mix1rob)[1])
+colnames(d2) <- c("intercept", "slope")
+```
+
+
+
+
+## Zone effect
+
+### Incidence
+
+```{r}
+m_zone_inc <- lmer(logit(inc / 100) ~ zone + (1 | district), survey, REML = F)
+anova(m_zone_inc)
+library(car)
+
+m_zone_inc2 <- lmer(logit(inc / 100) ~ zone*altitude + (1 | district), survey, REML = F)
+car::Anova(m_zone_inc2)
+AIC(m_zone_inc)
+
+plot(fitted(m_zone_inc), resid(m_zone_inc, type = "pearson"))# this will create the plot
+abline(0,0, col="red")
+qqnorm(resid(m_zone_inc)) 
+qqline(resid(m_zone_inc), col = "red") # add a perfect fit line
+hist(resid(m_zone_inc))
+
+```
+
+### Severity
+
+
+```{r}
+
+
+# Random Intercept and slope
+m_zone_sev <- lmer(logit(sev2/100) ~ zone  + (1 | district), survey, REML = F)
+AIC(m_zone_sev)
+anova(m_zone_sev)
+library(car)
+car::Anova(m_zone_sev, type = "III")
+
+plot(fitted(m_zone_sev), resid(m_zone_sev, type = "pearson"))# this will create the plot
+abline(0,0, col="red")
+qqnorm(resid(m_zone_sev)) 
+qqline(resid(m_zone_sev), col = "red") # add a perfect fit line
+hist(resid(m_zone_sev))
+
+```
+
+
+
+## Altitude effect
+
+#### Incidence
+
+```{r}
+m_alt_inc <- lmer(logit(inc / 100) ~ altitude + (1 | zone) + (1 | district), survey, REML = F)
+anova(m_alt_inc)
+m_alt_inc
+summary(m_alt_inc)
+car::Anova(m_alt_inc)
+```
+
+#### Severity
+
+```{r}
+m_alt_sev <- lmer(logit(sev2 / 100) ~ altitude + (1 | zone) + (1 | district), survey, REML = F)
+anova(m_alt_sev)
+car::Anova(m_alt_sev)
+```
+
+## Altitude:zone interaction effect
+
+
+#### Effect on incidence
+
+
+```{r}
+m_alt_inc_zone <- lmer(logit(inc/100 ) ~ altitude * zone + (1 | district), survey, REML = F)
+summary(m_alt_inc_zone)
+car::Anova(m_alt_inc_zone, type = "III")
+
+zone_alt_inc <- data.frame(emtrends(m_alt_inc_zone, pairwise ~ zone, var = "altitude" ))
+
+
+
+```
+
+
+#### Effect on severity
+
+```{r}
+m_alt_sev_zone <- lmer(logit(sev2 ) ~ altitude * zone + (1 | district), data = survey, REML = F)
+car::Anova(m_alt_sev_zone)
+zone_alt_sev <- data.frame(emtrends(m_alt_sev_zone, pairwise ~ zone, var = "altitude" ))
+```
+
+
+
+
+
+
+### Altitude vs cropping system 
+
+```{r}
+
+m_altcropsys_inc <- lmer(logit(inc / 100) ~  cropping_system * altitude
+  + (cropping_system | district), survey, REML = F)
+car::Anova(m_altcropsys_inc)
+
+
+m_altcropsys_sev <- lmer(logit(sev2/100 ) ~ altitude * cropping_system
+  + (cropping_system | district), survey, REML = F)
+car::Anova(m_altcropsys_sev)
+
+
+```
+
+
+### Altitude vs cultivar
+
+```{r}
+m_altcult_inc <- lmer(logit(inc / 100) ~ altitude  + (1 | district), survey, REML = F)
+m_altcult_inc2 <- lmer(logit(inc / 100) ~ altitude * cultivar + (cultivar | district), survey, REML = F)
+anova(m_altcult_inc, m_altcult_inc2)
+car::Anova(m_altcult_inc2)
+
+
+m_altcult <- lmer(logit(sev2 / 100) ~ altitude * cultivar + (cultivar | district), survey, REML = F)
+car::Anova(m_altcult)
+
+```
+
+### Altitude vs shade
+
+```{r}
+m_altshade_inc <- lmer(logit(inc / 100) ~ altitude * shade + (shade | district), survey, REML = F)
+Anova(m_altshade_inc)
+
+m_altshade <- lmer(logit(sev2 / 100) ~ altitude * shade + (shade | district), survey, REML = F, control = lmerControl(optimizer = "Nelder_Mead"))
+car::Anova(m_altshade)
+
+```
+
+
+### Altitude vs farm
+
+```{r}
+
+m_altfarm_inc <- lmer(logit(inc / 100) ~  farm_management * altitude  + (farm_management | district), survey, REML = F)
+car::Anova(m_altfarm_inc)
+plot(m_altfarm_inc)
+
+m_altfarm <- lmer(logit(sev2 / 100) ~ altitude * farm_management + (farm_management | district), survey, REML = F)
+car::Anova(m_altfarm)
+
+
+```
+
+
+
+
+
+
+
+

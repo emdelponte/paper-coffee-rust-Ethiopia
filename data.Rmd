@@ -1,0 +1,114 @@
+% Data
+
+
+```{r setup, include=FALSE}
+library(tidyverse)
+library(readxl)
+library(janitor)
+library(cowplot)
+library(patchwork)
+library(ggrepel)
+library(viridis)
+library(lme4) 
+library(emmeans)
+library(LaplacesDemon)
+```
+
+## Read data 
+ 
+ The raw data were organized in excel. Let's load it using the `read_excel` function.
+
+```{r echo=TRUE}
+
+dat_survey <- read_excel("data/survey-data-farm-level5.xlsx") 
+```
+
+## Transform data 
+
+The latitude and longitude from fields in West Wellega are in different format (decimal) than the rest of the fiels. We will first exclude the West Wellega zone from the dataset, convert to decimal and then combine everything again.
+
+### Non West Wellega 
+
+```{r echo=TRUE}
+
+survey2 <- dat_survey %>%
+  filter(zone != "West Wellega") %>%
+  separate(lon, c("lon_d", "lon_m", "lon_s", "lon_mili"), extra = "merge") %>%
+  separate(lat, c("lat_d", "lat_m", "lat_s", "lat_mili"), extra = "merge") %>%
+  mutate(
+    lon_d = as.numeric(lon_d),
+    lon_m = as.numeric(lon_m),
+    lon_s = as.numeric(lon_s),
+    lon_mili = as.numeric(lon_mili),
+    lat_d = as.numeric(lat_d),
+    lat_m = as.numeric(lat_m),
+    lat_s = as.numeric(lat_s),
+    lat_mili = as.numeric(lat_mili)
+  ) %>%
+  mutate(
+    lat = lat_d + (lat_m / 60) + (lat_s / 3600),
+    lon = lon_d + (lon_m / 60) + (lon_s / 3600)
+  ) %>%
+  mutate(elevation_class = case_when(
+    altitude < 1500 ~ "<1500m",
+    altitude < 1800 ~ "1500 to 1800m",
+    TRUE ~ ">1800m"
+  )) %>%
+  mutate(sev2 = ((sev / 100) * (inc / 100)) * 100)
+
+## Select only the variables that are in the other dataset
+
+survey2 <- survey2 %>%
+  dplyr::select(farm, region, zone, district, lon, lat, altitude, cultivar, shade, cropping_system, farm_management, inc, sev, lesion_count,  sev2)
+
+```
+
+### West Wellega fields
+
+The lat and lon are in decimal format, but not numeric, which needs transformation.
+
+
+```{r}
+
+survey3 <- dat_survey %>%
+  filter(zone == "West Wellega") %>%
+  mutate(
+    lon = as.numeric(lon),
+    lat = as.numeric(lat),
+    sev2 = ((sev / 100) * (inc / 100)) * 100
+  )
+
+```
+
+
+### Join dataframes
+
+```{r}
+survey <- rbind(survey2, survey3)
+```
+
+### Rename zone names
+
+```{r}
+
+survey$zone <- plyr::revalue(survey$zone, c(
+  "Gedeo" = "Gedio"
+))
+survey$region <- plyr::revalue(survey$region, c(
+  "South" = "SNNPR"
+))
+
+```
+
+## Create a CSV file
+
+```{r}
+
+survey <- survey %>%
+  dplyr::select(
+    farm, region, zone, district, lon, lat, altitude,
+    cultivar, shade, cropping_system, farm_management, inc, sev2
+  )
+
+write_csv(survey, "data/survey_clean.csv")
+```

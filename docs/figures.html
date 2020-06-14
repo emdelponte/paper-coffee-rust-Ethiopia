@@ -1,0 +1,929 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+
+<meta charset="utf-8" />
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
+
+
+
+
+<title>figures.utf8.md</title>
+
+<script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="site_libs/bootstrap-3.3.5/css/flatly.min.css" rel="stylesheet" />
+<script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<script src="site_libs/jqueryui-1.11.4/jquery-ui.min.js"></script>
+<link href="site_libs/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
+<script src="site_libs/tocify-1.9.1/jquery.tocify.js"></script>
+<script src="site_libs/navigation-1.1/tabsets.js"></script>
+<link href="site_libs/highlightjs-9.12.0/default.css" rel="stylesheet" />
+<script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
+<link href="site_libs/pagedtable-1.1/css/pagedtable.css" rel="stylesheet" />
+<script src="site_libs/pagedtable-1.1/js/pagedtable.js"></script>
+<link href="site_libs/font-awesome-5.1.0/css/all.css" rel="stylesheet" />
+<link href="site_libs/font-awesome-5.1.0/css/v4-shims.css" rel="stylesheet" />
+
+<style type="text/css">code{white-space: pre;}</style>
+<style type="text/css">
+  pre:not([class]) {
+    background-color: white;
+  }
+</style>
+<script type="text/javascript">
+if (window.hljs) {
+  hljs.configure({languages: []});
+  hljs.initHighlightingOnLoad();
+  if (document.readyState && document.readyState === "complete") {
+    window.setTimeout(function() { hljs.initHighlighting(); }, 0);
+  }
+}
+</script>
+
+
+
+<style type="text/css">
+h1 {
+  font-size: 34px;
+}
+h1.title {
+  font-size: 38px;
+}
+h2 {
+  font-size: 30px;
+}
+h3 {
+  font-size: 24px;
+}
+h4 {
+  font-size: 18px;
+}
+h5 {
+  font-size: 16px;
+}
+h6 {
+  font-size: 12px;
+}
+.table th:not([align]) {
+  text-align: left;
+}
+</style>
+
+<link rel="stylesheet" href="style.css" type="text/css" />
+
+
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+code {
+  color: inherit;
+  background-color: rgba(0, 0, 0, 0.04);
+}
+img {
+  max-width:100%;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+.html-widget {
+  margin-bottom: 20px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+summary {
+  display: list-item;
+}
+</style>
+
+
+<style type="text/css">
+/* padding for bootstrap navbar */
+body {
+  padding-top: 60px;
+  padding-bottom: 40px;
+}
+/* offset scroll position for anchor links (for fixed navbar)  */
+.section h1 {
+  padding-top: 65px;
+  margin-top: -65px;
+}
+.section h2 {
+  padding-top: 65px;
+  margin-top: -65px;
+}
+.section h3 {
+  padding-top: 65px;
+  margin-top: -65px;
+}
+.section h4 {
+  padding-top: 65px;
+  margin-top: -65px;
+}
+.section h5 {
+  padding-top: 65px;
+  margin-top: -65px;
+}
+.section h6 {
+  padding-top: 65px;
+  margin-top: -65px;
+}
+.dropdown-submenu {
+  position: relative;
+}
+.dropdown-submenu>.dropdown-menu {
+  top: 0;
+  left: 100%;
+  margin-top: -6px;
+  margin-left: -1px;
+  border-radius: 0 6px 6px 6px;
+}
+.dropdown-submenu:hover>.dropdown-menu {
+  display: block;
+}
+.dropdown-submenu>a:after {
+  display: block;
+  content: " ";
+  float: right;
+  width: 0;
+  height: 0;
+  border-color: transparent;
+  border-style: solid;
+  border-width: 5px 0 5px 5px;
+  border-left-color: #cccccc;
+  margin-top: 5px;
+  margin-right: -10px;
+}
+.dropdown-submenu:hover>a:after {
+  border-left-color: #ffffff;
+}
+.dropdown-submenu.pull-left {
+  float: none;
+}
+.dropdown-submenu.pull-left>.dropdown-menu {
+  left: -100%;
+  margin-left: 10px;
+  border-radius: 6px 0 6px 6px;
+}
+</style>
+
+<script>
+// manage active state of menu based on current page
+$(document).ready(function () {
+  // active menu anchor
+  href = window.location.pathname
+  href = href.substr(href.lastIndexOf('/') + 1)
+  if (href === "")
+    href = "index.html";
+  var menuAnchor = $('a[href="' + href + '"]');
+
+  // mark it active
+  menuAnchor.parent().addClass('active');
+
+  // if it's got a parent navbar menu mark it active as well
+  menuAnchor.closest('li.dropdown').addClass('active');
+});
+</script>
+
+<!-- tabsets -->
+
+<style type="text/css">
+.tabset-dropdown > .nav-tabs {
+  display: inline-table;
+  max-height: 500px;
+  min-height: 44px;
+  overflow-y: auto;
+  background: white;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs > li.active:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
+  content: "&#xe258;";
+  border: none;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs > li.active {
+  display: block;
+}
+
+.tabset-dropdown > .nav-tabs > li > a,
+.tabset-dropdown > .nav-tabs > li > a:focus,
+.tabset-dropdown > .nav-tabs > li > a:hover {
+  border: none;
+  display: inline-block;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li {
+  display: block;
+  float: none;
+}
+
+.tabset-dropdown > .nav-tabs > li {
+  display: none;
+}
+</style>
+
+<!-- code folding -->
+
+
+
+<style type="text/css">
+
+#TOC {
+  margin: 25px 0px 20px 0px;
+}
+@media (max-width: 768px) {
+#TOC {
+  position: relative;
+  width: 100%;
+}
+}
+
+
+.toc-content {
+  padding-left: 30px;
+  padding-right: 40px;
+}
+
+div.main-container {
+  max-width: 1200px;
+}
+
+div.tocify {
+  width: 20%;
+  max-width: 260px;
+  max-height: 85%;
+}
+
+@media (min-width: 768px) and (max-width: 991px) {
+  div.tocify {
+    width: 25%;
+  }
+}
+
+@media (max-width: 767px) {
+  div.tocify {
+    width: 100%;
+    max-width: none;
+  }
+}
+
+.tocify ul, .tocify li {
+  line-height: 20px;
+}
+
+.tocify-subheader .tocify-item {
+  font-size: 0.90em;
+}
+
+.tocify .list-group-item {
+  border-radius: 0px;
+}
+
+.tocify-subheader {
+  display: inline;
+}
+.tocify-subheader .tocify-item {
+  font-size: 0.95em;
+}
+
+</style>
+
+
+
+</head>
+
+<body>
+
+
+<div class="container-fluid main-container">
+
+
+<!-- setup 3col/9col grid for toc_float and main content  -->
+<div class="row-fluid">
+<div class="col-xs-12 col-sm-4 col-md-3">
+<div id="TOC" class="tocify">
+</div>
+</div>
+
+<div class="toc-content col-xs-12 col-sm-8 col-md-9">
+
+
+
+
+<div class="navbar navbar-default  navbar-fixed-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="index.html">Survey coffee rust in Ethiopia</a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        <li>
+  <a href="index.html">
+    <span class="fa fa fa fa-home"></span>
+     
+    About
+  </a>
+</li>
+<li>
+  <a href="data.html">
+    <span class="fa fa fa fa-table"></span>
+     
+    Data
+  </a>
+</li>
+<li>
+  <a href="modeling.html">
+    <span class="fa fa fa fa-file-code-o"></span>
+     
+    Documented analysis
+  </a>
+</li>
+<li>
+  <a href="figures.html">
+    <span class="fa fa-bar-chart"></span>
+     
+    Publication-ready plots
+  </a>
+</li>
+      </ul>
+    </div><!--/.nav-collapse -->
+  </div><!--/.container -->
+</div><!--/.navbar -->
+
+<div class="fluid-row" id="header">
+
+
+
+<h1 class="title toc-ignore">Figures</h1>
+
+</div>
+
+
+<div id="figure-1" class="section level2">
+<h2>Figure 1</h2>
+<div id="ethiopia-map" class="section level3">
+<h3>Ethiopia Map</h3>
+<pre class="r"><code>library(rnaturalearth)
+library(rnaturalearthhires)
+library(sf)</code></pre>
+<pre><code>## Linking to GEOS 3.7.2, GDAL 2.4.2, PROJ 5.2.0</code></pre>
+<pre class="r"><code>ETH &lt;- ne_countries(
+  country = &quot;Ethiopia&quot;,
+  returnclass = &quot;sf&quot;
+)
+
+region &lt;- sf::st_read(&quot;data/ethiopiaregion/Eth_Region_2013.shp&quot;)</code></pre>
+<pre><code>## Reading layer `Eth_Region_2013&#39; from data source `/Users/emersondelponte/Documents/github/paper-coffee-rust-Ethiopia/data/ethiopiaregion/Eth_Region_2013.shp&#39; using driver `ESRI Shapefile&#39;
+## Simple feature collection with 11 features and 6 fields
+## geometry type:  MULTIPOLYGON
+## dimension:      XY
+## bbox:           xmin: -162404.5 ymin: 375657.9 xmax: 1491092 ymax: 1641360
+## epsg (SRID):    20137
+## proj4string:    +proj=utm +zone=37 +ellps=clrk80 +towgs84=-166,-15,204,0,0,0,0 +units=m +no_defs</code></pre>
+<pre class="r"><code>zone &lt;- sf::st_read(&quot;data/ethiopia-zone/Eth_Zone_2013.shp&quot;)</code></pre>
+<pre><code>## Reading layer `Eth_Zone_2013&#39; from data source `/Users/emersondelponte/Documents/github/paper-coffee-rust-Ethiopia/data/ethiopia-zone/Eth_Zone_2013.shp&#39; using driver `ESRI Shapefile&#39;
+## Simple feature collection with 74 features and 9 fields
+## geometry type:  MULTIPOLYGON
+## dimension:      XY
+## bbox:           xmin: -162404.5 ymin: 375657.9 xmax: 1491092 ymax: 1641360
+## epsg (SRID):    20137
+## proj4string:    +proj=utm +zone=37 +ellps=clrk80 +towgs84=-166,-15,204,0,0,0,0 +units=m +no_defs</code></pre>
+<pre class="r"><code>district &lt;- sf::st_read(&quot;data/ethiopiaworeda/Eth_Woreda_2013.shp&quot;)</code></pre>
+<pre><code>## Reading layer `Eth_Woreda_2013&#39; from data source `/Users/emersondelponte/Documents/github/paper-coffee-rust-Ethiopia/data/ethiopiaworeda/Eth_Woreda_2013.shp&#39; using driver `ESRI Shapefile&#39;
+## Simple feature collection with 690 features and 12 fields
+## geometry type:  MULTIPOLYGON
+## dimension:      XY
+## bbox:           xmin: -162404.5 ymin: 375657.9 xmax: 1491092 ymax: 1641360
+## epsg (SRID):    20137
+## proj4string:    +proj=utm +zone=37 +ellps=clrk80 +towgs84=-166,-15,204,0,0,0,0 +units=m +no_defs</code></pre>
+<pre class="r"><code>ETH_REGIONS &lt;- region %&gt;%
+  filter(REGIONNAME %in% c(&quot;SNNPR&quot;, &quot;Oromia&quot;))
+
+survey$zone &lt;- plyr::revalue(
+  survey$zone,
+  c(
+    &quot;Ilu AbaBora&quot; = &quot;Ilubabor&quot;,
+
+    &quot;West Welega&quot; = &quot;West Wellega&quot;
+  )
+)</code></pre>
+<pre><code>## The following `from` values were not present in `x`: West Welega</code></pre>
+<pre class="r"><code>zone_names &lt;- survey %&gt;%
+  select(zone) %&gt;%
+  unique()
+
+ETH_ZONE &lt;- zone %&gt;%
+  filter(ZONENAME %in% c(
+    &quot;Jimma&quot;,
+    &quot;West Wellega&quot;,
+    &quot;Sidama&quot;,
+    &quot;Sheka&quot;,
+    &quot;Keffa&quot;,
+    &quot;Bench Maji&quot;,
+    &quot;Bale&quot;,
+    &quot;Gedio&quot;,
+    &quot;Ilubabor&quot;
+  ))
+
+district_names &lt;- survey %&gt;%
+  select(district) %&gt;%
+  unique()
+
+survey$district &lt;- plyr::revalue(survey$district, c(
+  &quot;Aira&quot; = &quot;Ayira&quot;,
+  &quot;Aletawondo&quot; = &quot;Aleta Wendo&quot;,
+  &quot;Anderecha&quot; = &quot;Anderacha&quot;,
+  &quot;Debub B&quot; = &quot;Debub Bench&quot;,
+  &quot;Delo-Menna&quot; = &quot;Mena&quot;,
+  &quot;Di/Zuria&quot; = &quot;Dila Zuria&quot;,
+  &quot;Gurafarda&quot; = &quot;Gurafereda&quot;,
+  &quot;Harena&quot; = &quot;Harena Buluk&quot;,
+  &quot;Mettu&quot; = &quot;Metu Zuria&quot;,
+  &quot;Shebe-Sombo&quot; = &quot;Shebe Sambo&quot;,
+  &quot;Shebedino&quot; = &quot;Shebe Dino&quot;,
+  &quot;Sheko&quot; = &quot;Sheka&quot;,
+  &quot;Wonago&quot; = &quot;Wenago&quot;,
+  &quot;Y/chefe&quot; = &quot;Yirgachefe&quot;,
+  &quot;Yayo&quot; = &quot;Yayu&quot;,
+  &quot;Gomma&quot; = &quot;Goma&quot;
+))</code></pre>
+<pre><code>## The following `from` values were not present in `x`: Aira, Aletawondo, Anderecha, Debub B, Delo-Menna, Di/Zuria, Gurafarda, Harena, Mettu, Shebe-Sombo, Wonago, Y/chefe</code></pre>
+<pre class="r"><code>district_names &lt;- district_names$district
+
+
+ETH_DISTRICTS &lt;- district %&gt;%
+  filter(WOREDANAME %in% district_names)</code></pre>
+<pre class="r"><code>survey &lt;- read_csv(&quot;data/survey_clean.csv&quot;)</code></pre>
+</div>
+</div>
+<div id="figure-2" class="section level2">
+<h2>Figure 2</h2>
+<div id="inc-sev-relationship" class="section level3">
+<h3>Inc-Sev relationship</h3>
+</div>
+</div>
+<div id="figure-3" class="section level2">
+<h2>Figure 3</h2>
+<div id="incidence-vs-zone" class="section level3">
+<h3>Incidence vs zone</h3>
+<pre class="r"><code>p_inc_alt_zone &lt;- survey %&gt;%
+  ggplot(aes(altitude, logit(inc/100), color = zone, group = zone)) +
+  geom_point() +
+  geom_smooth(method = lm, se = F) +
+  theme_minimal_grid(font_size = 10) +
+  theme(legend.position = &quot;none&quot;) +
+  scale_color_brewer(type = &quot;qual&quot;, palette = &quot;Set3&quot;)+
+    labs(x = &quot;Altitude (m)&quot;, y = &quot;Logit Incidence (proportion)&quot;)</code></pre>
+</div>
+<div id="severity-vs-zone" class="section level3">
+<h3>Severity vs zone</h3>
+<pre class="r"><code>p_sev_alt_zone &lt;- survey %&gt;%
+  ggplot(aes(altitude, logit(sev2/100), color = zone, group = zone)) +
+  geom_point() +
+  geom_smooth(method = lm, se = F) +
+  theme_minimal_grid(font_size = 10) +
+  theme(legend.position = &quot;none&quot;) +
+  scale_color_brewer(type = &quot;qual&quot;, palette = &quot;Set3&quot;)+
+    labs(x = &quot;Altitude (m)&quot;, y = &quot;Logit Severity (Proportion)&quot;)</code></pre>
+<div id="plot-slopes-inc-by-zone" class="section level5">
+<h5>Plot slopes inc by zone</h5>
+</div>
+<div id="effect-on-incidence" class="section level4">
+<h4>Effect on incidence</h4>
+<pre class="r"><code>m_alt_inc_zone &lt;- lmer(logit(inc/100 ) ~ altitude * zone + (1 | district), survey, REML = F)
+summary(m_alt_inc_zone)</code></pre>
+<pre><code>## Linear mixed model fit by maximum likelihood  [&#39;lmerMod&#39;]
+## Formula: logit(inc/100) ~ altitude * zone + (1 | district)
+##    Data: survey
+## 
+##      AIC      BIC   logLik deviance df.resid 
+##    554.9    635.0   -257.5    514.9      385 
+## 
+## Scaled residuals: 
+##     Min      1Q  Median      3Q     Max 
+## -3.2089 -0.5685 -0.0957  0.4815  4.6792 
+## 
+## Random effects:
+##  Groups   Name        Variance Std.Dev.
+##  district (Intercept) 0.04227  0.2056  
+##  Residual             0.18930  0.4351  
+## Number of obs: 405, groups:  district, 27
+## 
+## Fixed effects:
+##                             Estimate Std. Error t value
+## (Intercept)                0.8510927  0.7852840   1.084
+## altitude                  -0.0007735  0.0005239  -1.476
+## zoneBench Maji             2.4348759  0.8922217   2.729
+## zoneGedio                  2.6106598  1.0325223   2.528
+## zoneIlu AbaBora            3.1041604  1.0420872   2.979
+## zoneJimma                  2.4720684  1.2604894   1.961
+## zoneKeffa                  0.8145031  1.5454408   0.527
+## zoneSheka                  3.0386799  1.0261993   2.961
+## zoneSidama                 0.8533550  0.9156850   0.932
+## zoneWest Wellega           1.5087211  0.9871541   1.528
+## altitude:zoneBench Maji   -0.0017946  0.0006112  -2.936
+## altitude:zoneGedio        -0.0020325  0.0006646  -3.058
+## altitude:zoneIlu AbaBora  -0.0021065  0.0006648  -3.168
+## altitude:zoneJimma        -0.0016930  0.0007826  -2.163
+## altitude:zoneKeffa        -0.0008470  0.0009272  -0.914
+## altitude:zoneSheka        -0.0019962  0.0006671  -2.992
+## altitude:zoneSidama       -0.0010900  0.0006004  -1.815
+## altitude:zoneWest Wellega -0.0010655  0.0006509  -1.637</code></pre>
+<pre><code>## 
+## Correlation matrix not shown by default, as p = 18 &gt; 12.
+## Use print(x, correlation=TRUE)  or
+##     vcov(x)        if you need it</code></pre>
+<pre class="r"><code>Anova(m_alt_inc_zone, type = &quot;III&quot;)</code></pre>
+<div data-pagedtable="false">
+<script data-pagedtable-source type="application/json">
+{"columns":[{"label":[""],"name":["_rn_"],"type":[""],"align":["left"]},{"label":["Chisq"],"name":[1],"type":["dbl"],"align":["right"]},{"label":["Df"],"name":[2],"type":["dbl"],"align":["right"]},{"label":["Pr(>Chisq)"],"name":[3],"type":["dbl"],"align":["right"]}],"data":[{"1":"1.174628","2":"1","3":"0.278452396","_rn_":"(Intercept)"},{"1":"2.179503","2":"1","3":"0.139859619","_rn_":"altitude"},{"1":"20.972225","2":"8","3":"0.007221578","_rn_":"zone"},{"1":"18.449105","2":"8","3":"0.018100311","_rn_":"altitude:zone"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
+  </script>
+</div>
+<pre class="r"><code>zone_alt_inc &lt;- data.frame(emtrends(m_alt_inc_zone, pairwise ~ zone, var = &quot;altitude&quot; ))</code></pre>
+<pre><code>## Warning in (function (..., row.names = NULL, check.rows = FALSE, check.names =
+## TRUE, : row names were found from a short variable and have been discarded</code></pre>
+<pre class="r"><code>p_slopes_inc_alt_zone &lt;- zone_alt_inc %&gt;% 
+  ggplot(aes(reorder(emtrends.zone, emtrends.altitude.trend),emtrends.altitude.trend, color = emtrends.zone))+
+  geom_point(size =3)+
+  coord_flip()+
+  theme_minimal_vgrid(font_size = 11)+
+  theme(legend.position = &quot;none&quot;)+
+   scale_color_brewer(type = &quot;qual&quot;, palette = &quot;Set3&quot;)+
+  labs(x = &quot;&quot;, y = &quot;Slope estimates&quot;)+
+  geom_errorbar(aes(ymin = emtrends.lower.CL, ymax = emtrends.upper.CL),
+                width =0.2, size =1)</code></pre>
+<div id="plots-slopes-sev-by-zone" class="section level5">
+<h5>Plots slopes sev by zone</h5>
+<pre class="r"><code>m_alt_sev_zone &lt;- lmer(logit(sev2 ) ~ altitude * zone + (1 | district), data = survey, REML = F)
+Anova(m_alt_sev_zone)</code></pre>
+<div data-pagedtable="false">
+<script data-pagedtable-source type="application/json">
+{"columns":[{"label":[""],"name":["_rn_"],"type":[""],"align":["left"]},{"label":["Chisq"],"name":[1],"type":["dbl"],"align":["right"]},{"label":["Df"],"name":[2],"type":["dbl"],"align":["right"]},{"label":["Pr(>Chisq)"],"name":[3],"type":["dbl"],"align":["right"]}],"data":[{"1":"255.17133","2":"1","3":"1.936819e-57","_rn_":"altitude"},{"1":"15.59515","2":"8","3":"4.855529e-02","_rn_":"zone"},{"1":"16.24515","2":"8","3":"3.900270e-02","_rn_":"altitude:zone"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
+  </script>
+</div>
+<pre class="r"><code>zone_alt_sev &lt;- data.frame(emtrends(m_alt_sev_zone, pairwise ~ zone, var = &quot;altitude&quot; ))</code></pre>
+<pre><code>## Warning in (function (..., row.names = NULL, check.rows = FALSE, check.names =
+## TRUE, : row names were found from a short variable and have been discarded</code></pre>
+<pre class="r"><code>p_slopes_sev_alt_zone &lt;- zone_alt_sev %&gt;% 
+  ggplot(aes(reorder(emtrends.zone, emtrends.altitude.trend),emtrends.altitude.trend, color = emtrends.zone))+
+  geom_point(size =3)+
+  coord_flip()+
+  theme_minimal_vgrid(font_size = 11)+
+  theme(legend.position = &quot;none&quot;)+
+   scale_color_brewer(type = &quot;qual&quot;, palette = &quot;Set3&quot;)+
+  labs(x = &quot;&quot;, y = &quot;Slope estimates&quot;)+
+  geom_errorbar(aes(ymin = emtrends.lower.CL, ymax = emtrends.upper.CL),
+                width =0.2, size =1)</code></pre>
+</div>
+<div id="panel-of-plots" class="section level5">
+<h5>Panel of plots</h5>
+<pre class="r"><code>((p_inc_alt_zone  / p_sev_alt_zone ) | (p_slopes_inc_alt_zone / p_slopes_sev_alt_zone)) +
+  plot_annotation(tag_levels = &quot;A&quot;) </code></pre>
+<pre><code>## `geom_smooth()` using formula &#39;y ~ x&#39;
+## `geom_smooth()` using formula &#39;y ~ x&#39;</code></pre>
+<p><img src="figures_files/figure-html/unnamed-chunk-12-1.png" width="672" /></p>
+<pre class="r"><code>  ggsave(&quot;figs/Figure3.png&quot;, width = 8, height = 7)</code></pre>
+<pre><code>## `geom_smooth()` using formula &#39;y ~ x&#39;
+## `geom_smooth()` using formula &#39;y ~ x&#39;</code></pre>
+</div>
+</div>
+</div>
+</div>
+<div id="figure-4" class="section level2">
+<h2>Figure 4</h2>
+<div id="cropping-system-by-zone" class="section level3">
+<h3>Cropping system by zone</h3>
+<pre class="r"><code>survey$cropping_system &lt;- factor(survey$cropping_system, levels = c(&quot;Forest&quot;, &quot;Semiforest&quot;, &quot;Garden&quot;, &quot;Plantation&quot;))
+
+csystem &lt;- survey %&gt;% 
+  tabyl(zone, cropping_system) %&gt;% 
+  gather(cropping_system, name, 2:5)
+
+csystem$cropping_system &lt;- factor(csystem$cropping_system, levels = c(&quot;Forest&quot;, &quot;Semiforest&quot;, &quot;Garden&quot;, &quot;Plantation&quot;))
+
+p_cropping &lt;- csystem %&gt;% 
+  ggplot(aes(zone, name, fill = cropping_system))+
+  geom_col(position = &quot;fill&quot;, color = &quot;black&quot;, size =0.3)+
+  theme(legend.position = &quot;none&quot;,
+        axis.text.x = element_text(angle = 45, hjust = 1))+
+  labs(fill = &quot;&quot;,
+       x = &quot;&quot;,
+       y = &quot;Proportion&quot;)+
+  scale_fill_brewer(palette = &quot;Greens&quot;, direction = -1)
+p_cropping</code></pre>
+<p><img src="figures_files/figure-html/unnamed-chunk-13-1.png" width="672" /></p>
+</div>
+<div id="cropping-system-by-altitude" class="section level3">
+<h3>Cropping system by altitude</h3>
+<pre class="r"><code>survey$cropping_system &lt;- factor(survey$cropping_system, levels = c(&quot;Forest&quot;, &quot;Semiforest&quot;, &quot;Garden&quot;, &quot;Plantation&quot;))
+p_cropping_altitude &lt;- survey %&gt;% 
+  dplyr::select(altitude, cropping_system, inc, sev2) %&gt;% 
+  ggplot(aes(altitude, sev2, color = cropping_system, group = cropping_system))+
+  geom_point(size = 3, shape = 16)+
+ # geom_smooth(method = &quot;lm&quot;, se = F )+
+  theme_minimal_grid(font_size=11)+
+  theme(legend.position = &quot;top&quot;)+
+  labs(color = &quot;&quot;,
+       x = &quot;Altitude (m)&quot;,
+       y = &quot;Severity (%)&quot;)+
+  scale_color_brewer(palette = &quot;Greens&quot;, direction = -1)
+p_cropping_altitude</code></pre>
+<p><img src="figures_files/figure-html/unnamed-chunk-14-1.png" width="672" /></p>
+</div>
+<div id="farm-management-by-zone" class="section level3">
+<h3>Farm management by zone</h3>
+<pre class="r"><code>farm_man &lt;- survey %&gt;% 
+  tabyl(zone, farm_management) %&gt;% 
+  gather(farm_management, name, 2:5) 
+
+
+farm_man$farm_management &lt;- factor(
+farm_man$farm_management, levels = c(&quot;Intensive&quot;, &quot;Moderate&quot;, &quot;Minimal&quot;, &quot;Unmanaged&quot;))
+
+p_farm &lt;- farm_man %&gt;% 
+  ggplot(aes(zone, name, fill = farm_management))+
+  geom_col(position = &quot;fill&quot;, color = &quot;black&quot;, size =0.3)+
+  theme(legend.position = &quot;none&quot;,
+        axis.text.x = element_text(angle = 45, hjust = 1))+
+  labs(fill = &quot;&quot;,
+       x = &quot;&quot;,
+       y = &quot;Proportion&quot;)+
+  scale_fill_brewer(palette = &quot;Blues&quot;, direction = -1)</code></pre>
+</div>
+<div id="farm-management-by-altitude" class="section level3">
+<h3>Farm management by altitude</h3>
+<pre class="r"><code>survey$farm_management &lt;- factor(
+survey$farm_management, levels = c(&quot;Intensive&quot;, &quot;Moderate&quot;, &quot;Minimal&quot;, &quot;Unmanaged&quot;))
+p_farm_man_altitude &lt;- survey %&gt;% 
+  dplyr::select(altitude, farm_management, inc, sev2) %&gt;% 
+  ggplot(aes(altitude, sev2, color = farm_management, group = farm_management))+
+  geom_point(size = 3, shape = 16)+
+ # geom_smooth(method = &quot;lm&quot;, se = F )+
+  theme_minimal_grid(font_size=11)+
+  theme(legend.position = &quot;top&quot;)+
+  labs(color = &quot;&quot;,
+       x = &quot;Altitude (m)&quot;,
+       y = &quot;Severity (%)&quot;)+
+scale_color_brewer(palette = &quot;Blues&quot;, direction = -1)
+p_farm_man_altitude</code></pre>
+<p><img src="figures_files/figure-html/unnamed-chunk-16-1.png" width="672" /></p>
+</div>
+<div id="shade-by-zone" class="section level3">
+<h3>Shade by zone</h3>
+<pre class="r"><code>library(janitor)
+survey_shade &lt;- survey %&gt;% 
+  tabyl(zone, shade) %&gt;% 
+  gather(shade, name, 2:4) 
+
+
+survey_shade$shade &lt;- factor(
+survey_shade$shade, levels = c(&quot;Full shade&quot;, &quot;Mid shade&quot;, &quot;Sun&quot;))
+
+p_shade &lt;- survey_shade %&gt;% 
+  ggplot(aes(zone, name, fill = shade))+
+  geom_col(position = &quot;fill&quot;, color = &quot;black&quot;, size =0.3)+
+  theme(legend.position = &quot;none&quot;,
+        axis.text.x = element_text(angle = 45, hjust = 1))+
+  labs(fill = &quot;&quot;,
+       x = &quot;&quot;,
+       y = &quot;Proportion&quot;)+
+  scale_fill_brewer(palette = &quot;OrRd&quot;, direction = 1)
+p_shade</code></pre>
+<p><img src="figures_files/figure-html/unnamed-chunk-17-1.png" width="672" /></p>
+</div>
+<div id="shade-by-altitude" class="section level3">
+<h3>Shade by altitude</h3>
+<pre class="r"><code>survey$shade &lt;- factor(
+survey$shade, levels = c(&quot;Full shade&quot;, &quot;Mid shade&quot;, &quot;Sun&quot;))
+
+p_shade_altitude &lt;- survey %&gt;% 
+  dplyr::select(altitude, shade, inc, sev2) %&gt;% 
+  ggplot(aes(altitude, sev2, color = shade, group = shade))+
+  geom_point(size = 3, shape = 16)+
+ # geom_smooth(method = &quot;lm&quot;, se = F )+
+  theme_minimal_grid(font_size=11)+
+  theme(legend.position = &quot;top&quot;)+
+  labs(color = &quot;&quot;,
+       x = &quot;Altitude (m)&quot;,
+       y = &quot;Severity (%)&quot;)+
+  scale_color_brewer(palette = &quot;OrRd&quot;, direction = 1)
+p_shade_altitude</code></pre>
+<p><img src="figures_files/figure-html/unnamed-chunk-18-1.png" width="672" /></p>
+</div>
+<div id="cultivar-by-zone" class="section level3">
+<h3>Cultivar by zone</h3>
+<pre class="r"><code>survey_cult &lt;-survey %&gt;% 
+  tabyl(zone, cultivar) %&gt;% 
+  gather(cultivar, name, 2:4) 
+  
+
+survey_cult$cultivar &lt;- factor(
+
+survey_cult$cultivar, levels = c(&quot;Improved&quot;, &quot;Mixture&quot;, &quot;Local&quot;, &quot;Unmanaged&quot;))
+
+p_cult &lt;- survey_cult %&gt;% 
+  ggplot(aes(zone, name, fill = cultivar))+
+  geom_col(position = &quot;fill&quot;, color = &quot;black&quot;, size =0.3)+
+  theme(legend.position = &quot;none&quot;,
+        axis.text.x = element_text(angle = 45, hjust = 1))+
+  labs(fill = &quot;&quot;,
+       x = &quot;&quot;,
+       y = &quot;Proportion&quot;)+
+  scale_fill_brewer(palette = &quot;PuRd&quot;, direction = -1)
+p_cult</code></pre>
+<p><img src="figures_files/figure-html/unnamed-chunk-19-1.png" width="672" /></p>
+</div>
+<div id="cultivar-by-altitude" class="section level3">
+<h3>Cultivar by altitude</h3>
+<pre class="r"><code>survey$cultivar &lt;- factor(
+
+survey$cultivar, levels = c(&quot;Improved&quot;, &quot;Mixture&quot;, &quot;Local&quot;, &quot;Unmanaged&quot;))
+p_cult_altitude &lt;- survey %&gt;% 
+  dplyr::select(altitude, cultivar, inc, sev2) %&gt;% 
+  ggplot(aes(altitude, sev2, color = cultivar, group = cultivar))+
+  geom_point(size = 3, shape = 16)+
+ # geom_smooth(method = &quot;lm&quot;, se = F )+
+  theme_minimal_grid(font_size=11)+
+  theme(legend.position = &quot;top&quot;)+
+  labs(color = &quot;&quot;,
+       x = &quot;Altitude (m)&quot;,
+       y = &quot;Severity (%)&quot;)+
+  scale_color_brewer(palette = &quot;PuRd&quot;, direction = -1)
+p_cult_altitude</code></pre>
+<p><img src="figures_files/figure-html/unnamed-chunk-20-1.png" width="672" /></p>
+</div>
+<div id="compose-figure" class="section level3">
+<h3>Compose figure</h3>
+<pre class="r"><code>library(patchwork)
+
+ ((p_cropping_altitude / p_cult_altitude / p_farm_man_altitude / p_shade_altitude) |
+  ((p_cropping / p_cult /p_farm / p_shade ) ))+ 
+      plot_annotation(tag_levels = &#39;A&#39;) </code></pre>
+<p><img src="figures_files/figure-html/unnamed-chunk-21-1.png" width="672" /></p>
+<pre class="r"><code>ggsave(&quot;figs/Figure4.png&quot;, width =8, height =10)</code></pre>
+<p>(p_cropping_altitude / p_cult_altitude / p_farm_man_altitude / p_shade_altitude))+</p>
+</div>
+</div>
+<div id="figure-5" class="section level2">
+<h2>Figure 5</h2>
+<div id="mca-plot" class="section level3">
+<h3>MCA plot</h3>
+<pre class="r"><code>library(FactoMineR)
+library(factoextra)</code></pre>
+<pre><code>## Welcome! Related Books: `Practical Guide To Cluster Analysis in R` at https://goo.gl/13EFCZ</code></pre>
+<pre class="r"><code>survey_mca &lt;- survey %&gt;% 
+ mutate(altitude2 = case_when(
+    altitude &lt; 1452 ~ &quot;&lt; 1452&quot;,
+    altitude &lt; 1685 ~ &quot;1452 to 1685&quot;,
+    TRUE ~ &quot;&gt; 1685m&quot;
+  )) 
+ 
+attach(survey_mca)</code></pre>
+<pre><code>## The following objects are masked _by_ .GlobalEnv:
+## 
+##     district, region, zone</code></pre>
+<pre class="r"><code>data_mca &lt;- survey_mca %&gt;% dplyr::select(altitude2, zone, cultivar, shade, cropping_system, farm_management)
+
+head(data_mca)</code></pre>
+<div data-pagedtable="false">
+<script data-pagedtable-source type="application/json">
+{"columns":[{"label":["altitude2"],"name":[1],"type":["chr"],"align":["left"]},{"label":["zone"],"name":[2],"type":["chr"],"align":["left"]},{"label":["cultivar"],"name":[3],"type":["fctr"],"align":["left"]},{"label":["shade"],"name":[4],"type":["fctr"],"align":["left"]},{"label":["cropping_system"],"name":[5],"type":["fctr"],"align":["left"]},{"label":["farm_management"],"name":[6],"type":["fctr"],"align":["left"]}],"data":[{"1":"< 1452","2":"Bench Maji","3":"Local","4":"Sun","5":"Plantation","6":"Unmanaged"},{"1":"< 1452","2":"Bench Maji","3":"Mixture","4":"Mid shade","5":"Plantation","6":"Minimal"},{"1":"< 1452","2":"Bench Maji","3":"Mixture","4":"Mid shade","5":"Plantation","6":"Minimal"},{"1":"< 1452","2":"Bench Maji","3":"Local","4":"Sun","5":"Plantation","6":"Unmanaged"},{"1":"< 1452","2":"Bench Maji","3":"Local","4":"Sun","5":"Plantation","6":"Unmanaged"},{"1":"< 1452","2":"Bench Maji","3":"Mixture","4":"Mid shade","5":"Plantation","6":"Minimal"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
+  </script>
+</div>
+<pre class="r"><code>cats &lt;- apply(data_mca, 2, function(x) nlevels(as.factor(x))) # enumera as categorias
+cats</code></pre>
+<pre><code>##       altitude2            zone        cultivar           shade cropping_system 
+##               3               9               3               3               4 
+## farm_management 
+##               4</code></pre>
+<pre class="r"><code>res.mca &lt;- MCA(data_mca, graph = FALSE)
+
+p &lt;- fviz_mca_var(res.mca,
+  label = &quot;var&quot;, repel = T,
+  col.var = &quot;contrib&quot;,
+  # Avoid text overlapping (slow if many point)
+  ggtheme = theme_minimal()
+)
+p + scale_color_viridis() +
+  labs (title = &quot;&quot;, fill = &quot;Contribution&quot;)+
+  ggsave(&quot;figs/Figure5.png&quot;, width =7, height =5)</code></pre>
+<p><img src="figures_files/figure-html/unnamed-chunk-22-1.png" width="672" /></p>
+</div>
+</div>
+
+
+
+Copyright 2020 Emerson Del Ponte
+
+
+</div>
+</div>
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.header').parent('thead').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- tabsets -->
+
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+
+$(document).ready(function () {
+  $('.tabset-dropdown > .nav-tabs > li').click(function () {
+    $(this).parent().toggleClass('nav-tabs-open')
+  });
+});
+</script>
+
+<!-- code folding -->
+
+<script>
+$(document).ready(function ()  {
+
+    // move toc-ignore selectors from section div to header
+    $('div.section.toc-ignore')
+        .removeClass('toc-ignore')
+        .children('h1,h2,h3,h4,h5').addClass('toc-ignore');
+
+    // establish options
+    var options = {
+      selectors: "h1,h2,h3",
+      theme: "bootstrap3",
+      context: '.toc-content',
+      hashGenerator: function (text) {
+        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_').toLowerCase();
+      },
+      ignoreSelector: ".toc-ignore",
+      scrollTo: 0
+    };
+    options.showAndHide = false;
+    options.smoothScroll = false;
+
+    // tocify
+    var toc = $("#TOC").tocify(options).data("toc-tocify");
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>

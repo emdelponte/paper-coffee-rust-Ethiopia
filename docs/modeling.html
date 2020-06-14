@@ -1,0 +1,927 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+
+<meta charset="utf-8" />
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
+
+
+
+
+<title>modeling.utf8.md</title>
+
+<script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="site_libs/bootstrap-3.3.5/css/flatly.min.css" rel="stylesheet" />
+<script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<script src="site_libs/jqueryui-1.11.4/jquery-ui.min.js"></script>
+<link href="site_libs/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
+<script src="site_libs/tocify-1.9.1/jquery.tocify.js"></script>
+<script src="site_libs/navigation-1.1/tabsets.js"></script>
+<link href="site_libs/highlightjs-9.12.0/default.css" rel="stylesheet" />
+<script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
+<link href="site_libs/pagedtable-1.1/css/pagedtable.css" rel="stylesheet" />
+<script src="site_libs/pagedtable-1.1/js/pagedtable.js"></script>
+<link href="site_libs/font-awesome-5.1.0/css/all.css" rel="stylesheet" />
+<link href="site_libs/font-awesome-5.1.0/css/v4-shims.css" rel="stylesheet" />
+
+<style type="text/css">code{white-space: pre;}</style>
+<style type="text/css">
+  pre:not([class]) {
+    background-color: white;
+  }
+</style>
+<script type="text/javascript">
+if (window.hljs) {
+  hljs.configure({languages: []});
+  hljs.initHighlightingOnLoad();
+  if (document.readyState && document.readyState === "complete") {
+    window.setTimeout(function() { hljs.initHighlighting(); }, 0);
+  }
+}
+</script>
+
+
+
+<style type="text/css">
+h1 {
+  font-size: 34px;
+}
+h1.title {
+  font-size: 38px;
+}
+h2 {
+  font-size: 30px;
+}
+h3 {
+  font-size: 24px;
+}
+h4 {
+  font-size: 18px;
+}
+h5 {
+  font-size: 16px;
+}
+h6 {
+  font-size: 12px;
+}
+.table th:not([align]) {
+  text-align: left;
+}
+</style>
+
+<link rel="stylesheet" href="style.css" type="text/css" />
+
+
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+code {
+  color: inherit;
+  background-color: rgba(0, 0, 0, 0.04);
+}
+img {
+  max-width:100%;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+.html-widget {
+  margin-bottom: 20px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+summary {
+  display: list-item;
+}
+</style>
+
+
+<style type="text/css">
+/* padding for bootstrap navbar */
+body {
+  padding-top: 60px;
+  padding-bottom: 40px;
+}
+/* offset scroll position for anchor links (for fixed navbar)  */
+.section h1 {
+  padding-top: 65px;
+  margin-top: -65px;
+}
+.section h2 {
+  padding-top: 65px;
+  margin-top: -65px;
+}
+.section h3 {
+  padding-top: 65px;
+  margin-top: -65px;
+}
+.section h4 {
+  padding-top: 65px;
+  margin-top: -65px;
+}
+.section h5 {
+  padding-top: 65px;
+  margin-top: -65px;
+}
+.section h6 {
+  padding-top: 65px;
+  margin-top: -65px;
+}
+.dropdown-submenu {
+  position: relative;
+}
+.dropdown-submenu>.dropdown-menu {
+  top: 0;
+  left: 100%;
+  margin-top: -6px;
+  margin-left: -1px;
+  border-radius: 0 6px 6px 6px;
+}
+.dropdown-submenu:hover>.dropdown-menu {
+  display: block;
+}
+.dropdown-submenu>a:after {
+  display: block;
+  content: " ";
+  float: right;
+  width: 0;
+  height: 0;
+  border-color: transparent;
+  border-style: solid;
+  border-width: 5px 0 5px 5px;
+  border-left-color: #cccccc;
+  margin-top: 5px;
+  margin-right: -10px;
+}
+.dropdown-submenu:hover>a:after {
+  border-left-color: #ffffff;
+}
+.dropdown-submenu.pull-left {
+  float: none;
+}
+.dropdown-submenu.pull-left>.dropdown-menu {
+  left: -100%;
+  margin-left: 10px;
+  border-radius: 6px 0 6px 6px;
+}
+</style>
+
+<script>
+// manage active state of menu based on current page
+$(document).ready(function () {
+  // active menu anchor
+  href = window.location.pathname
+  href = href.substr(href.lastIndexOf('/') + 1)
+  if (href === "")
+    href = "index.html";
+  var menuAnchor = $('a[href="' + href + '"]');
+
+  // mark it active
+  menuAnchor.parent().addClass('active');
+
+  // if it's got a parent navbar menu mark it active as well
+  menuAnchor.closest('li.dropdown').addClass('active');
+});
+</script>
+
+<!-- tabsets -->
+
+<style type="text/css">
+.tabset-dropdown > .nav-tabs {
+  display: inline-table;
+  max-height: 500px;
+  min-height: 44px;
+  overflow-y: auto;
+  background: white;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs > li.active:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
+  content: "&#xe258;";
+  border: none;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs > li.active {
+  display: block;
+}
+
+.tabset-dropdown > .nav-tabs > li > a,
+.tabset-dropdown > .nav-tabs > li > a:focus,
+.tabset-dropdown > .nav-tabs > li > a:hover {
+  border: none;
+  display: inline-block;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li {
+  display: block;
+  float: none;
+}
+
+.tabset-dropdown > .nav-tabs > li {
+  display: none;
+}
+</style>
+
+<!-- code folding -->
+
+
+
+<style type="text/css">
+
+#TOC {
+  margin: 25px 0px 20px 0px;
+}
+@media (max-width: 768px) {
+#TOC {
+  position: relative;
+  width: 100%;
+}
+}
+
+
+.toc-content {
+  padding-left: 30px;
+  padding-right: 40px;
+}
+
+div.main-container {
+  max-width: 1200px;
+}
+
+div.tocify {
+  width: 20%;
+  max-width: 260px;
+  max-height: 85%;
+}
+
+@media (min-width: 768px) and (max-width: 991px) {
+  div.tocify {
+    width: 25%;
+  }
+}
+
+@media (max-width: 767px) {
+  div.tocify {
+    width: 100%;
+    max-width: none;
+  }
+}
+
+.tocify ul, .tocify li {
+  line-height: 20px;
+}
+
+.tocify-subheader .tocify-item {
+  font-size: 0.90em;
+}
+
+.tocify .list-group-item {
+  border-radius: 0px;
+}
+
+.tocify-subheader {
+  display: inline;
+}
+.tocify-subheader .tocify-item {
+  font-size: 0.95em;
+}
+
+</style>
+
+
+
+</head>
+
+<body>
+
+
+<div class="container-fluid main-container">
+
+
+<!-- setup 3col/9col grid for toc_float and main content  -->
+<div class="row-fluid">
+<div class="col-xs-12 col-sm-4 col-md-3">
+<div id="TOC" class="tocify">
+</div>
+</div>
+
+<div class="toc-content col-xs-12 col-sm-8 col-md-9">
+
+
+
+
+<div class="navbar navbar-default  navbar-fixed-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="index.html">Survey coffee rust in Ethiopia</a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        <li>
+  <a href="index.html">
+    <span class="fa fa fa fa-home"></span>
+     
+    About
+  </a>
+</li>
+<li>
+  <a href="data.html">
+    <span class="fa fa fa fa-table"></span>
+     
+    Data
+  </a>
+</li>
+<li>
+  <a href="modeling.html">
+    <span class="fa fa fa fa-file-code-o"></span>
+     
+    Documented analysis
+  </a>
+</li>
+<li>
+  <a href="figures.html">
+    <span class="fa fa-bar-chart"></span>
+     
+    Publication-ready plots
+  </a>
+</li>
+      </ul>
+    </div><!--/.nav-collapse -->
+  </div><!--/.container -->
+</div><!--/.navbar -->
+
+<div class="fluid-row" id="header">
+
+
+
+<h1 class="title toc-ignore">Modeling</h1>
+
+</div>
+
+
+<div id="read-data" class="section level1">
+<h1>Read data</h1>
+<pre class="r"><code>survey &lt;- read_csv(&quot;data/survey_clean.csv&quot;)</code></pre>
+<div id="incidence-vs-severity" class="section level2">
+<h2>Incidence vs severity</h2>
+<pre class="r"><code>survey &lt;- survey %&gt;%
+  mutate(ID = seq(1, 1, by = 1))
+
+# random intercept and slopes
+mix1 &lt;- lmer(log(sev2) ~ log(inc) + (log(inc) | district), data = survey)</code></pre>
+<pre class="r"><code>mix1@beta[1]</code></pre>
+<pre><code>## [1] -5.363283</code></pre>
+<pre class="r"><code>cis &lt;- confint(mix1)
+cis[5]</code></pre>
+<pre><code>## [1] -5.903924</code></pre>
+<pre class="r"><code>summary(mix1)</code></pre>
+<pre><code>## Linear mixed model fit by REML [&#39;lmerMod&#39;]
+## Formula: log(sev2) ~ log(inc) + (log(inc) | district)
+##    Data: survey
+## 
+## REML criterion at convergence: 364.3
+## 
+## Scaled residuals: 
+##     Min      1Q  Median      3Q     Max 
+## -4.5204 -0.3849  0.1278  0.5555  2.8912 
+## 
+## Random effects:
+##  Groups   Name        Variance Std.Dev. Corr 
+##  district (Intercept) 0.81648  0.9036        
+##           log(inc)    0.04951  0.2225   -0.96
+##  Residual             0.11789  0.3433        
+## Number of obs: 405, groups:  district, 27
+## 
+## Fixed effects:
+##             Estimate Std. Error t value
+## (Intercept) -5.36328    0.25421   -21.1
+## log(inc)     2.05992    0.06822    30.2
+## 
+## Correlation of Fixed Effects:
+##          (Intr)
+## log(inc) -0.976
+## convergence code: 0
+## Model failed to converge with max|grad| = 0.02111 (tol = 0.002, component 1)</code></pre>
+<pre class="r"><code>library(lmerTest)
+anova(mix1, ddf = &quot;Kenward-Roger&quot;)</code></pre>
+<div data-pagedtable="false">
+<script data-pagedtable-source type="application/json">
+{"columns":[{"label":[""],"name":["_rn_"],"type":[""],"align":["left"]},{"label":["Df"],"name":[1],"type":["int"],"align":["right"]},{"label":["Sum Sq"],"name":[2],"type":["dbl"],"align":["right"]},{"label":["Mean Sq"],"name":[3],"type":["dbl"],"align":["right"]},{"label":["F value"],"name":[4],"type":["dbl"],"align":["right"]}],"data":[{"1":"1","2":"107.4946","3":"107.4946","4":"911.8365","_rn_":"log(inc)"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
+  </script>
+</div>
+<pre class="r"><code>library(piecewiseSEM)
+summary(mix1)</code></pre>
+<pre><code>## Linear mixed model fit by REML [&#39;lmerMod&#39;]
+## Formula: log(sev2) ~ log(inc) + (log(inc) | district)
+##    Data: survey
+## 
+## REML criterion at convergence: 364.3
+## 
+## Scaled residuals: 
+##     Min      1Q  Median      3Q     Max 
+## -4.5204 -0.3849  0.1278  0.5555  2.8912 
+## 
+## Random effects:
+##  Groups   Name        Variance Std.Dev. Corr 
+##  district (Intercept) 0.81648  0.9036        
+##           log(inc)    0.04951  0.2225   -0.96
+##  Residual             0.11789  0.3433        
+## Number of obs: 405, groups:  district, 27
+## 
+## Fixed effects:
+##             Estimate Std. Error t value
+## (Intercept) -5.36328    0.25421   -21.1
+## log(inc)     2.05992    0.06822    30.2
+## 
+## Correlation of Fixed Effects:
+##          (Intr)
+## log(inc) -0.976
+## convergence code: 0
+## Model failed to converge with max|grad| = 0.02111 (tol = 0.002, component 1)</code></pre>
+<pre class="r"><code># plot the pearson&#39;s model residuals
+plot(mix1, type = c(&quot;p&quot;, &quot;smooth&quot;))</code></pre>
+<p><img src="modeling_files/figure-html/unnamed-chunk-3-1.png" width="672" /></p>
+<pre class="r"><code>vc &lt;- VarCorr(mix1)
+as.data.frame(vc, order = &quot;lower.tri&quot;)</code></pre>
+<div data-pagedtable="false">
+<script data-pagedtable-source type="application/json">
+{"columns":[{"label":["grp"],"name":[1],"type":["chr"],"align":["left"]},{"label":["var1"],"name":[2],"type":["chr"],"align":["left"]},{"label":["var2"],"name":[3],"type":["chr"],"align":["left"]},{"label":["vcov"],"name":[4],"type":["dbl"],"align":["right"]},{"label":["sdcor"],"name":[5],"type":["dbl"],"align":["right"]}],"data":[{"1":"district","2":"(Intercept)","3":"NA","4":"0.81648091","5":"0.9035933"},{"1":"district","2":"(Intercept)","3":"log(inc)","4":"-0.19321300","5":"-0.9610035"},{"1":"district","2":"log(inc)","3":"NA","4":"0.04950815","5":"0.2225043"},{"1":"Residual","2":"NA","3":"NA","4":"0.11788804","5":"0.3433483"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
+  </script>
+</div>
+<pre class="r"><code>rsquared(mix1)</code></pre>
+<div data-pagedtable="false">
+<script data-pagedtable-source type="application/json">
+{"columns":[{"label":["Response"],"name":[1],"type":["fctr"],"align":["left"]},{"label":["family"],"name":[2],"type":["fctr"],"align":["left"]},{"label":["link"],"name":[3],"type":["fctr"],"align":["left"]},{"label":["method"],"name":[4],"type":["fctr"],"align":["left"]},{"label":["Marginal"],"name":[5],"type":["dbl"],"align":["right"]},{"label":["Conditional"],"name":[6],"type":["dbl"],"align":["right"]}],"data":[{"1":"sev2","2":"gaussian","3":"identity","4":"none","5":"0.6458388","6":"0.9367534"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
+  </script>
+</div>
+<pre class="r"><code>library(robustlmm)
+mix1rob &lt;- rlmer(log(sev2) ~ log(inc) + (inc | district),
+  data = survey,
+  method = &quot;DASvar&quot;
+)
+compare(mix1, mix1rob, show.rho.functions = FALSE)</code></pre>
+<pre><code>##                                   mix1           mix1rob       
+## Coef                                                           
+## (Intercept)                       -5.36 (0.2542) -5.1 (0.2202) 
+## log(inc)                           2.06 (0.0682)  2.0 (0.0525) 
+##                                                                
+## VarComp                                                        
+## (Intercept) | district            0.90359        0.44166       
+## log(inc) | district               0.22250                      
+## inc | district                                   0.00498       
+##                                                                
+## Correlations                                                   
+## (Intercept) x log(inc) | district -0.961                       
+## (Intercept) x inc | district                     -1.000        
+##                                                                
+## sigma                             0.343          0.267         
+##                                                                
+## REML                              364</code></pre>
+<pre class="r"><code>summary(mix1rob)</code></pre>
+<pre><code>## Robust linear mixed model fit by DASvar 
+## Formula: log(sev2) ~ log(inc) + (inc | district) 
+##    Data: survey 
+## 
+## Scaled residuals: 
+##     Min      1Q  Median      3Q     Max 
+## -6.3308 -0.6526  0.0415  0.6342  3.6839 
+## 
+## Random effects:
+##  Groups   Name        Variance  Std.Dev. Corr 
+##  district (Intercept) 1.951e-01 0.441659      
+##           inc         2.484e-05 0.004984 -1.00
+##  Residual             7.104e-02 0.266531      
+## Number of obs: 405, groups: district, 27
+## 
+## Fixed effects:
+##             Estimate Std. Error t value
+## (Intercept) -5.09829    0.22016  -23.16
+## log(inc)     1.99802    0.05251   38.05
+## 
+## Correlation of Fixed Effects:
+##          (Intr)
+## log(inc) -0.984
+## 
+## Robustness weights for the residuals: 
+##  331 weights are ~= 1. The remaining 74 ones are summarized as
+##    Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
+##   0.212   0.419   0.669   0.651   0.889   0.996 
+## 
+## Robustness weights for the random effects: 
+##  46 weights are ~= 1. The remaining 8 ones are
+##     7     8    11    12    19    20    31    32 
+## 0.705 0.705 0.984 0.984 0.536 0.536 0.969 0.969 
+## 
+## Rho functions used for fitting:
+##   Residuals:
+##     eff: smoothed Huber (k = 1.345, s = 10) 
+##     sig: smoothed Huber, Proposal II (k = 1.345, s = 10) 
+##   Random Effects, variance component 1 (district):
+##     eff: smoothed Huber (k = 1.345, s = 10) 
+##     vcp: smoothed Huber (k = 1.345, s = 10)</code></pre>
+<pre class="r"><code>d2 &lt;- data.frame(ranef(mix1rob)[1])
+colnames(d2) &lt;- c(&quot;intercept&quot;, &quot;slope&quot;)</code></pre>
+</div>
+<div id="zone-effect" class="section level2">
+<h2>Zone effect</h2>
+<div id="incidence" class="section level3">
+<h3>Incidence</h3>
+<pre class="r"><code>m_zone_inc &lt;- lmer(logit(inc / 100) ~ zone + (1 | district), survey, REML = F)
+anova(m_zone_inc)</code></pre>
+<div data-pagedtable="false">
+<script data-pagedtable-source type="application/json">
+{"columns":[{"label":[""],"name":["_rn_"],"type":[""],"align":["left"]},{"label":["Sum Sq"],"name":[1],"type":["dbl"],"align":["right"]},{"label":["Mean Sq"],"name":[2],"type":["dbl"],"align":["right"]},{"label":["NumDF"],"name":[3],"type":["int"],"align":["right"]},{"label":["DenDF"],"name":[4],"type":["dbl"],"align":["right"]},{"label":["F value"],"name":[5],"type":["dbl"],"align":["right"]},{"label":["Pr(>F)"],"name":[6],"type":["dbl"],"align":["right"]}],"data":[{"1":"4.419487","2":"0.5524359","3":"8","4":"26.9997","5":"1.948878","6":"0.09326484","_rn_":"zone"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
+  </script>
+</div>
+<pre class="r"><code>library(car)
+
+m_zone_inc2 &lt;- lmer(logit(inc / 100) ~ zone*altitude + (1 | district), survey, REML = F)
+car::Anova(m_zone_inc2)</code></pre>
+<div data-pagedtable="false">
+<script data-pagedtable-source type="application/json">
+{"columns":[{"label":[""],"name":["_rn_"],"type":[""],"align":["left"]},{"label":["Chisq"],"name":[1],"type":["dbl"],"align":["right"]},{"label":["Df"],"name":[2],"type":["dbl"],"align":["right"]},{"label":["Pr(>Chisq)"],"name":[3],"type":["dbl"],"align":["right"]}],"data":[{"1":"30.92648","2":"8","3":"1.447997e-04","_rn_":"zone"},{"1":"277.39778","2":"1","3":"2.771239e-62","_rn_":"altitude"},{"1":"18.44910","2":"8","3":"1.810031e-02","_rn_":"zone:altitude"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
+  </script>
+</div>
+<pre class="r"><code>AIC(m_zone_inc)</code></pre>
+<pre><code>## [1] 732.9776</code></pre>
+<pre class="r"><code>plot(fitted(m_zone_inc), resid(m_zone_inc, type = &quot;pearson&quot;))# this will create the plot
+abline(0,0, col=&quot;red&quot;)</code></pre>
+<p><img src="modeling_files/figure-html/unnamed-chunk-4-1.png" width="672" /></p>
+<pre class="r"><code>qqnorm(resid(m_zone_inc)) 
+qqline(resid(m_zone_inc), col = &quot;red&quot;) # add a perfect fit line</code></pre>
+<p><img src="modeling_files/figure-html/unnamed-chunk-4-2.png" width="672" /></p>
+<pre class="r"><code>hist(resid(m_zone_inc))</code></pre>
+<p><img src="modeling_files/figure-html/unnamed-chunk-4-3.png" width="672" /></p>
+</div>
+<div id="severity" class="section level3">
+<h3>Severity</h3>
+<pre class="r"><code># Random Intercept and slope
+m_zone_sev &lt;- lmer(logit(sev2/100) ~ zone  + (1 | district), survey, REML = F)
+AIC(m_zone_sev)</code></pre>
+<pre><code>## [1] 1069.991</code></pre>
+<pre class="r"><code>anova(m_zone_sev)</code></pre>
+<div data-pagedtable="false">
+<script data-pagedtable-source type="application/json">
+{"columns":[{"label":[""],"name":["_rn_"],"type":[""],"align":["left"]},{"label":["Sum Sq"],"name":[1],"type":["dbl"],"align":["right"]},{"label":["Mean Sq"],"name":[2],"type":["dbl"],"align":["right"]},{"label":["NumDF"],"name":[3],"type":["int"],"align":["right"]},{"label":["DenDF"],"name":[4],"type":["dbl"],"align":["right"]},{"label":["F value"],"name":[5],"type":["dbl"],"align":["right"]},{"label":["Pr(>F)"],"name":[6],"type":["dbl"],"align":["right"]}],"data":[{"1":"8.623628","2":"1.077954","3":"8","4":"26.99993","5":"1.628947","6":"0.1630278","_rn_":"zone"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
+  </script>
+</div>
+<pre class="r"><code>library(car)
+car::Anova(m_zone_sev, type = &quot;III&quot;)</code></pre>
+<div data-pagedtable="false">
+<script data-pagedtable-source type="application/json">
+{"columns":[{"label":[""],"name":["_rn_"],"type":[""],"align":["left"]},{"label":["Chisq"],"name":[1],"type":["dbl"],"align":["right"]},{"label":["Df"],"name":[2],"type":["dbl"],"align":["right"]},{"label":["Pr(>Chisq)"],"name":[3],"type":["dbl"],"align":["right"]}],"data":[{"1":"27.76280","2":"1","3":"1.371379e-07","_rn_":"(Intercept)"},{"1":"13.03158","2":"8","3":"1.107677e-01","_rn_":"zone"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
+  </script>
+</div>
+<pre class="r"><code>plot(fitted(m_zone_sev), resid(m_zone_sev, type = &quot;pearson&quot;))# this will create the plot
+abline(0,0, col=&quot;red&quot;)</code></pre>
+<p><img src="modeling_files/figure-html/unnamed-chunk-5-1.png" width="672" /></p>
+<pre class="r"><code>qqnorm(resid(m_zone_sev)) 
+qqline(resid(m_zone_sev), col = &quot;red&quot;) # add a perfect fit line</code></pre>
+<p><img src="modeling_files/figure-html/unnamed-chunk-5-2.png" width="672" /></p>
+<pre class="r"><code>hist(resid(m_zone_sev))</code></pre>
+<p><img src="modeling_files/figure-html/unnamed-chunk-5-3.png" width="672" /></p>
+</div>
+</div>
+<div id="altitude-effect" class="section level2">
+<h2>Altitude effect</h2>
+<div id="incidence-1" class="section level4">
+<h4>Incidence</h4>
+<pre class="r"><code>m_alt_inc &lt;- lmer(logit(inc / 100) ~ altitude + (1 | zone) + (1 | district), survey, REML = F)
+anova(m_alt_inc)</code></pre>
+<div data-pagedtable="false">
+<script data-pagedtable-source type="application/json">
+{"columns":[{"label":[""],"name":["_rn_"],"type":[""],"align":["left"]},{"label":["Sum Sq"],"name":[1],"type":["dbl"],"align":["right"]},{"label":["Mean Sq"],"name":[2],"type":["dbl"],"align":["right"]},{"label":["NumDF"],"name":[3],"type":["int"],"align":["right"]},{"label":["DenDF"],"name":[4],"type":["dbl"],"align":["right"]},{"label":["F value"],"name":[5],"type":["dbl"],"align":["right"]},{"label":["Pr(>F)"],"name":[6],"type":["dbl"],"align":["right"]}],"data":[{"1":"47.38414","2":"47.38414","3":"1","4":"234.3438","5":"241.986","6":"5.841766e-38","_rn_":"altitude"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
+  </script>
+</div>
+<pre class="r"><code>m_alt_inc</code></pre>
+<pre><code>## Linear mixed model fit by maximum likelihood  [&#39;lmerModLmerTest&#39;]
+## Formula: logit(inc/100) ~ altitude + (1 | zone) + (1 | district)
+##    Data: survey
+##       AIC       BIC    logLik  deviance  df.resid 
+##  558.7778  578.7972 -274.3889  548.7778       400 
+## Random effects:
+##  Groups   Name        Std.Dev.
+##  district (Intercept) 0.2872  
+##  zone     (Intercept) 0.1760  
+##  Residual             0.4425  
+## Number of obs: 405, groups:  district, 27; zone, 9
+## Fixed Effects:
+## (Intercept)     altitude  
+##    2.812588    -0.002248</code></pre>
+<pre class="r"><code>summary(m_alt_inc)</code></pre>
+<pre><code>## Linear mixed model fit by maximum likelihood . t-tests use Satterthwaite&#39;s
+##   method [lmerModLmerTest]
+## Formula: logit(inc/100) ~ altitude + (1 | zone) + (1 | district)
+##    Data: survey
+## 
+##      AIC      BIC   logLik deviance df.resid 
+##    558.8    578.8   -274.4    548.8      400 
+## 
+## Scaled residuals: 
+##     Min      1Q  Median      3Q     Max 
+## -3.5324 -0.5722 -0.1268  0.5375  4.7904 
+## 
+## Random effects:
+##  Groups   Name        Variance Std.Dev.
+##  district (Intercept) 0.08248  0.2872  
+##  zone     (Intercept) 0.03097  0.1760  
+##  Residual             0.19581  0.4425  
+## Number of obs: 405, groups:  district, 27; zone, 9
+## 
+## Fixed effects:
+##               Estimate Std. Error         df t value Pr(&gt;|t|)    
+## (Intercept)  2.813e+00  2.406e-01  1.658e+02   11.69   &lt;2e-16 ***
+## altitude    -2.247e-03  1.445e-04  2.343e+02  -15.56   &lt;2e-16 ***
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
+## 
+## Correlation of Fixed Effects:
+##          (Intr)
+## altitude -0.937</code></pre>
+<pre class="r"><code>car::Anova(m_alt_inc)</code></pre>
+<div data-pagedtable="false">
+<script data-pagedtable-source type="application/json">
+{"columns":[{"label":[""],"name":["_rn_"],"type":[""],"align":["left"]},{"label":["Chisq"],"name":[1],"type":["dbl"],"align":["right"]},{"label":["Df"],"name":[2],"type":["dbl"],"align":["right"]},{"label":["Pr(>Chisq)"],"name":[3],"type":["dbl"],"align":["right"]}],"data":[{"1":"241.986","2":"1","3":"1.451041e-54","_rn_":"altitude"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
+  </script>
+</div>
+</div>
+<div id="severity-1" class="section level4">
+<h4>Severity</h4>
+<pre class="r"><code>m_alt_sev &lt;- lmer(logit(sev2 / 100) ~ altitude + (1 | zone) + (1 | district), survey, REML = F)
+anova(m_alt_sev)</code></pre>
+<div data-pagedtable="false">
+<script data-pagedtable-source type="application/json">
+{"columns":[{"label":[""],"name":["_rn_"],"type":[""],"align":["left"]},{"label":["Sum Sq"],"name":[1],"type":["dbl"],"align":["right"]},{"label":["Mean Sq"],"name":[2],"type":["dbl"],"align":["right"]},{"label":["NumDF"],"name":[3],"type":["int"],"align":["right"]},{"label":["DenDF"],"name":[4],"type":["dbl"],"align":["right"]},{"label":["F value"],"name":[5],"type":["dbl"],"align":["right"]},{"label":["Pr(>F)"],"name":[6],"type":["dbl"],"align":["right"]}],"data":[{"1":"110.5565","2":"110.5565","3":"1","4":"190.8532","5":"239.3836","6":"1.585574e-35","_rn_":"altitude"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
+  </script>
+</div>
+<pre class="r"><code>car::Anova(m_alt_sev)</code></pre>
+<div data-pagedtable="false">
+<script data-pagedtable-source type="application/json">
+{"columns":[{"label":[""],"name":["_rn_"],"type":[""],"align":["left"]},{"label":["Chisq"],"name":[1],"type":["dbl"],"align":["right"]},{"label":["Df"],"name":[2],"type":["dbl"],"align":["right"]},{"label":["Pr(>Chisq)"],"name":[3],"type":["dbl"],"align":["right"]}],"data":[{"1":"239.3836","2":"1","3":"5.359326e-54","_rn_":"altitude"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
+  </script>
+</div>
+</div>
+</div>
+<div id="altitudezone-interaction-effect" class="section level2">
+<h2>Altitude:zone interaction effect</h2>
+<div id="effect-on-incidence" class="section level4">
+<h4>Effect on incidence</h4>
+<pre class="r"><code>m_alt_inc_zone &lt;- lmer(logit(inc/100 ) ~ altitude * zone + (1 | district), survey, REML = F)
+summary(m_alt_inc_zone)</code></pre>
+<pre><code>## Linear mixed model fit by maximum likelihood . t-tests use Satterthwaite&#39;s
+##   method [lmerModLmerTest]
+## Formula: logit(inc/100) ~ altitude * zone + (1 | district)
+##    Data: survey
+## 
+##      AIC      BIC   logLik deviance df.resid 
+##    554.9    635.0   -257.5    514.9      385 
+## 
+## Scaled residuals: 
+##     Min      1Q  Median      3Q     Max 
+## -3.2089 -0.5685 -0.0957  0.4815  4.6792 
+## 
+## Random effects:
+##  Groups   Name        Variance Std.Dev.
+##  district (Intercept) 0.04227  0.2056  
+##  Residual             0.18930  0.4351  
+## Number of obs: 405, groups:  district, 27
+## 
+## Fixed effects:
+##                             Estimate Std. Error         df t value Pr(&gt;|t|)   
+## (Intercept)                8.511e-01  7.853e-01  4.009e+02   1.084  0.27910   
+## altitude                  -7.735e-04  5.239e-04  3.700e+02  -1.476  0.14071   
+## zoneBench Maji             2.435e+00  8.922e-01  4.050e+02   2.729  0.00663 **
+## zoneGedio                  2.611e+00  1.033e+00  2.199e+02   2.528  0.01216 * 
+## zoneIlu AbaBora            3.104e+00  1.042e+00  2.598e+02   2.979  0.00317 **
+## zoneJimma                  2.472e+00  1.260e+00  3.599e+02   1.961  0.05063 . 
+## zoneKeffa                  8.145e-01  1.545e+00  4.040e+02   0.527  0.59846   
+## zoneSheka                  3.039e+00  1.026e+00  3.267e+02   2.961  0.00329 **
+## zoneSidama                 8.534e-01  9.157e-01  3.251e+02   0.932  0.35206   
+## zoneWest Wellega           1.509e+00  9.872e-01  2.648e+02   1.528  0.12762   
+## altitude:zoneBench Maji   -1.795e-03  6.112e-04  3.805e+02  -2.936  0.00353 **
+## altitude:zoneGedio        -2.033e-03  6.646e-04  2.840e+02  -3.058  0.00244 **
+## altitude:zoneIlu AbaBora  -2.106e-03  6.648e-04  3.299e+02  -3.168  0.00168 **
+## altitude:zoneJimma        -1.693e-03  7.826e-04  3.926e+02  -2.163  0.03111 * 
+## altitude:zoneKeffa        -8.470e-04  9.272e-04  3.959e+02  -0.914  0.36152   
+## altitude:zoneSheka        -1.996e-03  6.671e-04  3.780e+02  -2.992  0.00295 **
+## altitude:zoneSidama       -1.090e-03  6.004e-04  3.820e+02  -1.815  0.07025 . 
+## altitude:zoneWest Wellega -1.066e-03  6.509e-04  3.191e+02  -1.637  0.10265   
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1</code></pre>
+<pre class="r"><code>car::Anova(m_alt_inc_zone, type = &quot;III&quot;)</code></pre>
+<div data-pagedtable="false">
+<script data-pagedtable-source type="application/json">
+{"columns":[{"label":[""],"name":["_rn_"],"type":[""],"align":["left"]},{"label":["Chisq"],"name":[1],"type":["dbl"],"align":["right"]},{"label":["Df"],"name":[2],"type":["dbl"],"align":["right"]},{"label":["Pr(>Chisq)"],"name":[3],"type":["dbl"],"align":["right"]}],"data":[{"1":"1.174628","2":"1","3":"0.278452396","_rn_":"(Intercept)"},{"1":"2.179503","2":"1","3":"0.139859619","_rn_":"altitude"},{"1":"20.972225","2":"8","3":"0.007221578","_rn_":"zone"},{"1":"18.449105","2":"8","3":"0.018100311","_rn_":"altitude:zone"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
+  </script>
+</div>
+<pre class="r"><code>zone_alt_inc &lt;- data.frame(emtrends(m_alt_inc_zone, pairwise ~ zone, var = &quot;altitude&quot; ))</code></pre>
+</div>
+<div id="effect-on-severity" class="section level4">
+<h4>Effect on severity</h4>
+<pre class="r"><code>m_alt_sev_zone &lt;- lmer(logit(sev2 ) ~ altitude * zone + (1 | district), data = survey, REML = F)
+car::Anova(m_alt_sev_zone)</code></pre>
+<div data-pagedtable="false">
+<script data-pagedtable-source type="application/json">
+{"columns":[{"label":[""],"name":["_rn_"],"type":[""],"align":["left"]},{"label":["Chisq"],"name":[1],"type":["dbl"],"align":["right"]},{"label":["Df"],"name":[2],"type":["dbl"],"align":["right"]},{"label":["Pr(>Chisq)"],"name":[3],"type":["dbl"],"align":["right"]}],"data":[{"1":"255.17133","2":"1","3":"1.936819e-57","_rn_":"altitude"},{"1":"15.59515","2":"8","3":"4.855529e-02","_rn_":"zone"},{"1":"16.24515","2":"8","3":"3.900270e-02","_rn_":"altitude:zone"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
+  </script>
+</div>
+<pre class="r"><code>zone_alt_sev &lt;- data.frame(emtrends(m_alt_sev_zone, pairwise ~ zone, var = &quot;altitude&quot; ))</code></pre>
+</div>
+<div id="altitude-vs-cropping-system" class="section level3">
+<h3>Altitude vs cropping system</h3>
+<pre class="r"><code>m_altcropsys_inc &lt;- lmer(logit(inc / 100) ~  cropping_system * altitude
+  + (cropping_system | district), survey, REML = F)
+car::Anova(m_altcropsys_inc)</code></pre>
+<div data-pagedtable="false">
+<script data-pagedtable-source type="application/json">
+{"columns":[{"label":[""],"name":["_rn_"],"type":[""],"align":["left"]},{"label":["Chisq"],"name":[1],"type":["dbl"],"align":["right"]},{"label":["Df"],"name":[2],"type":["dbl"],"align":["right"]},{"label":["Pr(>Chisq)"],"name":[3],"type":["dbl"],"align":["right"]}],"data":[{"1":"86.750564","2":"3","3":"1.092328e-18","_rn_":"cropping_system"},{"1":"60.501119","2":"1","3":"7.353666e-15","_rn_":"altitude"},{"1":"4.943553","2":"3","3":"1.759775e-01","_rn_":"cropping_system:altitude"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
+  </script>
+</div>
+<pre class="r"><code>m_altcropsys_sev &lt;- lmer(logit(sev2/100 ) ~ altitude * cropping_system
+  + (cropping_system | district), survey, REML = F)
+car::Anova(m_altcropsys_sev)</code></pre>
+<div data-pagedtable="false">
+<script data-pagedtable-source type="application/json">
+{"columns":[{"label":[""],"name":["_rn_"],"type":[""],"align":["left"]},{"label":["Chisq"],"name":[1],"type":["dbl"],"align":["right"]},{"label":["Df"],"name":[2],"type":["dbl"],"align":["right"]},{"label":["Pr(>Chisq)"],"name":[3],"type":["dbl"],"align":["right"]}],"data":[{"1":"67.158900","2":"1","3":"2.504820e-16","_rn_":"altitude"},{"1":"62.366542","2":"3","3":"1.834412e-13","_rn_":"cropping_system"},{"1":"7.994574","2":"3","3":"4.612398e-02","_rn_":"altitude:cropping_system"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
+  </script>
+</div>
+</div>
+<div id="altitude-vs-cultivar" class="section level3">
+<h3>Altitude vs cultivar</h3>
+<pre class="r"><code>m_altcult_inc &lt;- lmer(logit(inc / 100) ~ altitude  + (1 | district), survey, REML = F)
+m_altcult_inc2 &lt;- lmer(logit(inc / 100) ~ altitude * cultivar + (cultivar | district), survey, REML = F)
+anova(m_altcult_inc, m_altcult_inc2)</code></pre>
+<div data-pagedtable="false">
+<script data-pagedtable-source type="application/json">
+{"columns":[{"label":[""],"name":["_rn_"],"type":[""],"align":["left"]},{"label":["Df"],"name":[1],"type":["dbl"],"align":["right"]},{"label":["AIC"],"name":[2],"type":["dbl"],"align":["right"]},{"label":["BIC"],"name":[3],"type":["dbl"],"align":["right"]},{"label":["logLik"],"name":[4],"type":["dbl"],"align":["right"]},{"label":["deviance"],"name":[5],"type":["dbl"],"align":["right"]},{"label":["Chisq"],"name":[6],"type":["dbl"],"align":["right"]},{"label":["Chi Df"],"name":[7],"type":["dbl"],"align":["right"]},{"label":["Pr(>Chisq)"],"name":[8],"type":["dbl"],"align":["right"]}],"data":[{"1":"4","2":"558.7947","3":"574.8102","4":"-275.3973","5":"550.7947","6":"NA","7":"NA","8":"NA","_rn_":"m_altcult_inc"},{"1":"13","2":"439.0059","3":"491.0564","4":"-206.5029","5":"413.0059","6":"137.7888","7":"9","8":"2.950082e-25","_rn_":"m_altcult_inc2"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
+  </script>
+</div>
+<pre class="r"><code>car::Anova(m_altcult_inc2)</code></pre>
+<div data-pagedtable="false">
+<script data-pagedtable-source type="application/json">
+{"columns":[{"label":[""],"name":["_rn_"],"type":[""],"align":["left"]},{"label":["Chisq"],"name":[1],"type":["dbl"],"align":["right"]},{"label":["Df"],"name":[2],"type":["dbl"],"align":["right"]},{"label":["Pr(>Chisq)"],"name":[3],"type":["dbl"],"align":["right"]}],"data":[{"1":"30.130707","2":"1","3":"4.038853e-08","_rn_":"altitude"},{"1":"84.711718","2":"2","3":"4.027951e-19","_rn_":"cultivar"},{"1":"6.715172","2":"2","3":"3.481921e-02","_rn_":"altitude:cultivar"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
+  </script>
+</div>
+<pre class="r"><code>m_altcult &lt;- lmer(logit(sev2 / 100) ~ altitude * cultivar + (cultivar | district), survey, REML = F)
+car::Anova(m_altcult)</code></pre>
+<div data-pagedtable="false">
+<script data-pagedtable-source type="application/json">
+{"columns":[{"label":[""],"name":["_rn_"],"type":[""],"align":["left"]},{"label":["Chisq"],"name":[1],"type":["dbl"],"align":["right"]},{"label":["Df"],"name":[2],"type":["dbl"],"align":["right"]},{"label":["Pr(>Chisq)"],"name":[3],"type":["dbl"],"align":["right"]}],"data":[{"1":"50.343373","2":"1","3":"1.290652e-12","_rn_":"altitude"},{"1":"61.513695","2":"2","3":"4.390064e-14","_rn_":"cultivar"},{"1":"1.627902","2":"2","3":"4.431039e-01","_rn_":"altitude:cultivar"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
+  </script>
+</div>
+</div>
+<div id="altitude-vs-shade" class="section level3">
+<h3>Altitude vs shade</h3>
+<pre class="r"><code>m_altshade_inc &lt;- lmer(logit(inc / 100) ~ altitude * shade + (shade | district), survey, REML = F)
+Anova(m_altshade_inc)</code></pre>
+<div data-pagedtable="false">
+<script data-pagedtable-source type="application/json">
+{"columns":[{"label":[""],"name":["_rn_"],"type":[""],"align":["left"]},{"label":["Chisq"],"name":[1],"type":["dbl"],"align":["right"]},{"label":["Df"],"name":[2],"type":["dbl"],"align":["right"]},{"label":["Pr(>Chisq)"],"name":[3],"type":["dbl"],"align":["right"]}],"data":[{"1":"25.594926","2":"1","3":"4.211454e-07","_rn_":"altitude"},{"1":"84.487204","2":"2","3":"4.506473e-19","_rn_":"shade"},{"1":"7.588183","2":"2","3":"2.250334e-02","_rn_":"altitude:shade"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
+  </script>
+</div>
+<pre class="r"><code>m_altshade &lt;- lmer(logit(sev2 / 100) ~ altitude * shade + (shade | district), survey, REML = F, control = lmerControl(optimizer = &quot;Nelder_Mead&quot;))
+car::Anova(m_altshade)</code></pre>
+<div data-pagedtable="false">
+<script data-pagedtable-source type="application/json">
+{"columns":[{"label":[""],"name":["_rn_"],"type":[""],"align":["left"]},{"label":["Chisq"],"name":[1],"type":["dbl"],"align":["right"]},{"label":["Df"],"name":[2],"type":["dbl"],"align":["right"]},{"label":["Pr(>Chisq)"],"name":[3],"type":["dbl"],"align":["right"]}],"data":[{"1":"49.894787","2":"1","3":"1.622151e-12","_rn_":"altitude"},{"1":"44.305627","2":"2","3":"2.394172e-10","_rn_":"shade"},{"1":"4.380627","2":"2","3":"1.118817e-01","_rn_":"altitude:shade"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
+  </script>
+</div>
+</div>
+<div id="altitude-vs-farm" class="section level3">
+<h3>Altitude vs farm</h3>
+<pre class="r"><code>m_altfarm_inc &lt;- lmer(logit(inc / 100) ~  farm_management * altitude  + (farm_management | district), survey, REML = F)
+car::Anova(m_altfarm_inc)</code></pre>
+<div data-pagedtable="false">
+<script data-pagedtable-source type="application/json">
+{"columns":[{"label":[""],"name":["_rn_"],"type":[""],"align":["left"]},{"label":["Chisq"],"name":[1],"type":["dbl"],"align":["right"]},{"label":["Df"],"name":[2],"type":["dbl"],"align":["right"]},{"label":["Pr(>Chisq)"],"name":[3],"type":["dbl"],"align":["right"]}],"data":[{"1":"156.901219","2":"3","3":"8.547289e-34","_rn_":"farm_management"},{"1":"29.213970","2":"1","3":"6.481022e-08","_rn_":"altitude"},{"1":"4.800303","2":"3","3":"1.870177e-01","_rn_":"farm_management:altitude"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
+  </script>
+</div>
+<pre class="r"><code>plot(m_altfarm_inc)</code></pre>
+<p><img src="modeling_files/figure-html/unnamed-chunk-13-1.png" width="672" /></p>
+<pre class="r"><code>m_altfarm &lt;- lmer(logit(sev2 / 100) ~ altitude * farm_management + (farm_management | district), survey, REML = F)
+car::Anova(m_altfarm)</code></pre>
+<div data-pagedtable="false">
+<script data-pagedtable-source type="application/json">
+{"columns":[{"label":[""],"name":["_rn_"],"type":[""],"align":["left"]},{"label":["Chisq"],"name":[1],"type":["dbl"],"align":["right"]},{"label":["Df"],"name":[2],"type":["dbl"],"align":["right"]},{"label":["Pr(>Chisq)"],"name":[3],"type":["dbl"],"align":["right"]}],"data":[{"1":"47.168801","2":"1","3":"6.512891e-12","_rn_":"altitude"},{"1":"82.540288","2":"3","3":"8.750772e-18","_rn_":"farm_management"},{"1":"6.086811","2":"3","3":"1.074622e-01","_rn_":"altitude:farm_management"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
+  </script>
+</div>
+</div>
+</div>
+</div>
+
+
+
+Copyright 2020 Emerson Del Ponte
+
+
+</div>
+</div>
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.header').parent('thead').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- tabsets -->
+
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+
+$(document).ready(function () {
+  $('.tabset-dropdown > .nav-tabs > li').click(function () {
+    $(this).parent().toggleClass('nav-tabs-open')
+  });
+});
+</script>
+
+<!-- code folding -->
+
+<script>
+$(document).ready(function ()  {
+
+    // move toc-ignore selectors from section div to header
+    $('div.section.toc-ignore')
+        .removeClass('toc-ignore')
+        .children('h1,h2,h3,h4,h5').addClass('toc-ignore');
+
+    // establish options
+    var options = {
+      selectors: "h1,h2,h3",
+      theme: "bootstrap3",
+      context: '.toc-content',
+      hashGenerator: function (text) {
+        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_').toLowerCase();
+      },
+      ignoreSelector: ".toc-ignore",
+      scrollTo: 0
+    };
+    options.showAndHide = false;
+    options.smoothScroll = false;
+
+    // tocify
+    var toc = $("#TOC").tocify(options).data("toc-tocify");
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>
